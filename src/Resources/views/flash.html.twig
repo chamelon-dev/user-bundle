@@ -1,0 +1,20 @@
+{% for type, messages in app.flashes %}
+    {% if messages|length > 0 %}
+        <div class="col-12">
+            {% set colors = {
+                'success': 'green',
+                'danger': 'red',
+            } %}
+            {% set color = (colors[type] is defined) ? colors[type] : 'violet' %}
+
+            {% for message in messages %}
+            <div class="alert alert-{{ color }}">
+                <div class="alert-content">{{ message|trans|raw }}</div>
+                <button type="button" data-close-alert>
+                    <i class="icon icon-times"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}

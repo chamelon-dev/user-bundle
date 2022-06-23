@@ -1,0 +1,16 @@
+<div class="pagenav-results">
+        {% trans %}Результатов{% endtrans %}
+        <select data-select2-search="false" data-select2-width="85px" name="page_count">
+            {% for value in limitsList %}
+                {% set valuetext = (value == 'all') ? 'Все'|trans : value %}
+                {% if currentLimit == 1024 %}
+                    {% set currentLimit = 'all' %}
+                {% endif %}
+                {% if currentLimit == value %}
+                    <option value="{{ value }}" selected="selected">{{ valuetext }}</option>
+                {% else %}
+                    <option value="{{ value }}">{{ valuetext }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+</div>

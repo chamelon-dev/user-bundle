@@ -1,0 +1,62 @@
+<div>
+    {% for button in actions %}
+        {% set widget = 'form' %}
+        {% if button.widget is defined %}
+            {% set widget = button.widget %}
+        {% endif %}
+
+        {% set class = 'button-secondary' %}
+        {% if button.class is defined %}
+            {% set class = button.class %}
+        {% endif %}
+
+        {% set data = '' %}
+        {% if button.data is defined %}
+            {% set data = button.data %}
+        {% endif %}
+
+        {% if widget == 'form' %}
+            <button type="button {{ button.type }}" name="{{ button.name }}" class="button {{ class }}" {{ data }}>{{ button.value|trans }}</button>
+        {% elseif widget == 'icon' %}
+            <a type="button" href="{{ button.path }}" data-toggle="tooltip" title="{{ button.value|trans }}" class="button button-sm {{ class }}"><i class="ti {{ button.ti_icon }}"></i></a>
+        {% elseif widget == 'link-confirm' %}
+            <a
+                type="button"
+                href="#"
+                data-href="{{ button.path }}"
+                class="button {{ class }}"
+                data-toggle="modal"
+                data-target="#confirm-action"
+                {% if button.ok %}
+                    data-ok="{{ button.ok }}"
+                {% endif %}
+                {% if button.body %}
+                    data-body="{{ button.body }}"
+                {% endif %}
+                {% if button.okclass %}
+                    data-okclass="{{ button.okclass }}"
+                {% endif %}
+            >
+                    {{ button.value|trans }}
+            </a>
+        {% elseif widget == 'link-signing' %}
+            <a
+                    type="button"
+                    href="#"
+                    class="button {{ class }}"
+                    data-iframesrc="{{ button.iframesrc }}"
+                    data-okhref="{{ button.okhref }}"
+                    data-toggle="modal"
+                    data-target="#signing"
+                    data-title="{{ button.title|default('Confirmation with digital signature')|trans }}"
+                    data-pretext="{{ button.pretext|default('Confirm yourself with digital signature, then press confirmed button.')|trans }}"
+                    data-ok="{{ button.ok|default('Confirmed')|trans }}"
+                    data-okclass="{{ button.okclass ?? 'button-primary' }}"
+            >
+                {{ button.value|trans }}
+            </a>
+        {% else %}
+            <a href="{{ button.path }}" class="button {{ class }}">{{ button.value|trans }}</a>
+        {% endif %}
+    {% endfor %}
+</div>

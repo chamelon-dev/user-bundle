@@ -1,0 +1,84 @@
+{% if pageCount > 1 %}
+
+    <nav>
+        {% set isSkippingEnabled = (pageCount > 7) %}
+        {% set classAlign = (align is not defined) ? '' : align=='center' ? ' justify-content-center' : (align=='right' ? ' justify-content-end' : '') %}
+        {% set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') %}
+        <ul class="pagination{{ classAlign }}{{ classSize }}">
+
+            {# стрелка влево #}
+            {% if previous is defined %}
+                <li class="page-item">
+                    <a class="page-link" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</span>
+                </li>
+            {% endif %}
+
+            {% set isAlreadySkipping = false %}
+            {% for page in 1..pageCount %}
+                {% set isActive = false %}
+
+                {# первый элемент показываем всегда #}
+                {% if page == 1 %}
+                    {% set isActive = true %}
+                {% endif %}
+
+                {# последний элемент показываем всегда #}
+                {% if page == pageCount  %}
+                    {% set isActive = true %}
+                {% endif %}
+
+                {# элементы слева и справа от текущего показываем всегда #}
+                {% if page == current-1 or page == current + 1 %}
+                    {% set isActive = true %}
+                {% endif %}
+
+                {% if page == current %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page }}</span>
+                    </li>
+                {% else %}
+                    {% if isSkippingEnabled %}
+                        {% if isActive %}
+                            {% if isAlreadySkipping %}
+                                {# если предыдущие элементы были неактивны, закроем skip-тег #}
+                                    </ul>
+                                </li>
+                                {% set isAlreadySkipping = false %}
+                            {% endif %}
+                        {% else %}
+                            {% if not isAlreadySkipping %}
+                                {# если предыдущие элементы были активны, а такущий - нет, откроем skip-тег #}
+                                {% set isAlreadySkipping = true %}
+                                <li class="page-item page-skip" tabindex="0">
+                                    <button type="button" class="page-link">&hellip;</button>
+                                    <ul class="page-skip-list">
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                    </li>
+
+
+                {% endif %}
+            {% endfor %}
+
+            {# стрелка вправо #}
+            {% if next is defined %}
+                <li class="page-item">
+                    <a class="page-link" rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</a>
+                </li>
+            {% else %}
+                <li  class="page-item disabled">
+                    <span class="page-link">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</span>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+{% endif %}

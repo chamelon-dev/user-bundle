@@ -1,0 +1,207 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Данные пользователя'|trans %}
+
+{% block head_title %}
+    Данные пользователя
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Данные пользователя{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="{{ path('user_list') }}">{% trans %}Пользователи{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Просмотр{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{{ user.fio ?? user.username }}</h1>
+                </div>
+            </div>
+
+            {# скопированная инфа  #}
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Данные пользователя</h3>
+                            </div>
+                            <div class="infoblock-content">
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="avatar avatar-80">
+                                                <img src="{{ asset('bundles/user/images/no-photo.svg') }}" alt="Фото профиля отсутствует"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Логин</strong></div>
+                                        <div class="col-8">
+                                            {{ user.username }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>E-mail</strong></div>
+                                        <div class="col-8">
+                                            {{ user.email }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Права доступа</h3>
+                            </div>
+                            <div class="infoblock-content">
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Роли</strong></div>
+                                        <div class="col-8">
+                                            {% if roles is not empty %}
+                                                <ul>
+                                                    {% for role in roles %}
+                                                        <li>{{ role }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Пермишны</strong></div>
+                                        <div class="col-8">
+                                            {% if permissions is not empty %}
+                                                <ul>
+                                                    {% for permission in permissions %}
+                                                        <li>{{ permission }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Персональные данные</h3>
+                            </div>
+
+                            <div class="infoblock-row">
+                                <div class="row">
+                                    <div class="col-4"><strong>Фамилия</strong></div>
+                                    <div class="col-8">
+                                        {{ user.lastname ?? '-' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="infoblock-content">
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Имя</strong></div>
+                                        <div class="col-8">
+                                            {{ user.name ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Отчество</strong></div>
+                                        <div class="col-8">
+                                            {{ user.patronymic ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Подразделение</strong></div>
+                                        <div class="col-8">
+                                            {{ user.workplace ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Должность</strong></div>
+                                        <div class="col-8">
+                                            {{ user.duty ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Дата рождения</strong></div>
+                                        <div class="col-8">
+                                            {% if user.birthdate is not null %}
+                                                {{ user.birthdate|date('d.m.Y') }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Номер телефона</strong></div>
+                                        <div class="col-8">
+                                            {{ user.phone ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends '@User/page.html.twig' %}
+
+{% block title %}{{ 'Log in!'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{#    <style>{{ include('@User/css/sigin.css.twig') }}</style>#}
+{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-12 col-md-6 offset-md-3 col-xl-4 offset-xl-4 col-xxxl-4 offset-xxxl-4 h-100">
+                <div class="login">
+{#                    <div class="login-logo">#}
+{#                    </div>#}
+                    <div class="login-title">
+                        <h1>Новая пользовательская система</h1>
+                    </div>
+                    <div class="login-form">
+                        {% if error %}
+                            <div class="alert alert-red mb-56">
+                                <div class="alert-content">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                <button type="button" data-close-alert>
+                                    <i class="icon icon-times"></i>
+                                </button>
+                            </div>
+                        {% endif %}
+                        <form method="post" action="{{ path('user_check') }}">
+                            <div class="field">
+                                <label for="login">Логин</label>
+                                <div class="field-icon field-icon-prefix">
+                                    <input name="username" value="" placeholder="Введите логин" id="login">
+                                    <i class="icon icon-user field-icon-start"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="password">Пароль</label>
+                                <div class="field-icon field-icon-both">
+                                    <i class="icon icon-lock field-icon-start"></i>
+                                    <input type="password" name="password" value="" placeholder="Введите пароль" id="password">
+                                    <button type="button" class="field-button field-button-end" data-toggle-password>
+                                        <i class="icon icon-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <input type="hidden" name="challenge" value="{% if challenge is defined %}{{ challenge }}{% endif %}">
+
+                            <button type="submit" class="button button-solid button-primary w-100">Войти</button>
+                        </form>
+                    </div>
+                    <div class="login-reset">
+                        <a href="#">Зарегистрироваться</a>
+                        <a href="#">Забыли пароль?</a>
+                    </div>
+{#                    <div class="login-version">Вер. 1.3.19 от 20.08.2019г.</div>#}
+{#                    <div class="login-support">По вопросам авторизации и пользования системой Вы можете связаться с техподдержкой</div>#}
+{#                    <div class="login-contacts">#}
+{#                        <ul>#}
+{#                            <li>#}
+{#                                <a href="mailto:999@mchs.ru">#}
+{#                                    <i class="icon icon-envelope"></i>#}
+{#                                    999@mchs.ru#}
+{#                                </a>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <a href="tel:+78002000600">#}
+{#                                    <i class="icon icon-phone"></i>#}
+{#                                    88002000600#}
+{#                                </a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

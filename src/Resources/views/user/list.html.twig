@@ -1,0 +1,139 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Список пользователей'|trans %}
+
+{% block head_title %}
+    Список пользователей
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Список пользователей{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Пользователи{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{% trans %}Список пользователей{% endtrans %}</h1>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="tabnav">
+                    {{ knp_menu_render('user.list', {'currentAsLink': false, 'template': '@User/menu/tab.html.twig' }) }}
+                </div>
+            </div>
+
+            <div class="col-12">
+                {% if users|length > 0 %}
+                    <div class="table-container">
+                        <table class="table-empty-cells td-valign-top" data-fix-right-col="true">
+                            <thead>
+                            <th>{% trans %}Логин{% endtrans %}</th>
+                            <th>{% trans %}E-mail{% endtrans %}</th>
+                            <th>{% trans %}ФИО{% endtrans %}</th>
+                            <th>{% trans %}Место работы{% endtrans %}</th>
+                            <th>{% trans %}Должность{% endtrans %}</th>
+                            <th>{% trans %}Роли{% endtrans %}</th>
+                            <th>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.fio }}</td>
+                                    <td>{{ user.workplace }}</td>
+                                    <td>{{ user.duty }}</td>
+                                    <td>
+                                        {% if user.role.values %}
+                                            {% for role in user.role.values %}
+                                                {{ role.name }}<br>
+                                            {% endfor %}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="text-right">
+
+                                        <a class="td-link" href="{{ path('user_view', { 'id': user.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-eye"></i>
+                                        </a>
+
+                                        <a class="td-link" href="{{ path('user_edit', { 'id': user.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-pencil"></i>
+                                        </a>
+
+                                        <a class="td-link"
+                                           href="#"
+                                           data-toggle="modal"
+                                           data-target="#confirm-action"
+                                           data-href="{{ path('user_delete', {
+                                               'id': user.id,
+                                               'fromUrl': currentPath
+                                           }) }}"
+                                           data-body="Вы уверены, что хотите удалить пользователя {{ user.username }}?"
+                                           data-ok="{% trans %}Delete{% endtrans %}"
+                                           data-okclass="button-danger"
+                                        >
+                                            <i class="icon icon-trash"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    {% trans %}The list is empty.{% endtrans %}
+                {% endif %}
+
+            </div>
+
+            <div class="col-12">
+                <div class="pagenav">
+                    <div class="row">
+                        <div class="col-12 col-xl-6">
+                            {{ include('@User/helpers/pagenavCounter.html.twig', { 'entities': users } ) }}
+                            {{ include('@User/helpers/pagenavResults.html.twig', {
+                                'currentLimit': currentLimit,
+                                'limitsList': limitsList
+                            } ) }}
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <div class="pagenav-pagination">
+                                {{ knp_pagination_render(users) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

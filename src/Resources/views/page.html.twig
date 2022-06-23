@@ -1,0 +1,56 @@
+{% extends "@User/base.html.twig" %}
+
+{% block head_js %}
+    {{ parent() }}
+{% endblock %}
+
+{% if app.request.attributes.get('_route') %}
+    {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% else %}
+    {% set currentPath = '/' %}
+{% endif %}
+{% set queryString = app.request.query.all|unset('fromUrl')|url_encode %}
+{% if queryString %}
+    {% set currentPath = currentPath ~ '?' ~ queryString %}
+{% endif %}
+
+{% block body_header %}
+    {{ include('@User/nav.html.twig') }}
+{% endblock %}
+
+{% block body_menu %}{% endblock %}
+{% block body_title %}<h1>{{ title }}</h1>{% endblock %}
+{% block body_content %}
+
+    {% block body_content_breadcrumbs %}
+    {% endblock %}
+
+    {% block body_content_flash %}
+        {{ include('@User/flash.html.twig') }}
+    {% endblock %}
+
+{% endblock %}
+{% block body_footer %}
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-xxl-6 order-2 order-xxl-1">
+                    <div class="footer-copyrights">
+                        &copy; {% trans %}Copyright{% endtrans %} 2022
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+{% block body_js %}
+    {{ parent() }}
+    {{ include('@User/js/jquery-3.6.0.slim.js.twig') }}
+    {{ include('@User/js/script.js.twig') }}
+    {{ include('@User/js/modal.js.twig') }}
+
+{#    {{ encore_entry_script_tags('initModal') }}#}
+{% endblock %}

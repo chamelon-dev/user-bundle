@@ -1,0 +1,34 @@
+{% set formFieldError = form_errors(formField)|trim %}
+{% set labeled = labeled ?? true %}
+{% if formFieldError %}
+    <div class="field pb-16 validation-error">
+        {% if labeled %}
+            {{ form_label(formField) }}
+        {% endif %}
+        <div class="field-icon field-icon-double-postfix">
+            {{ form_widget(formField) }}
+            <button type="button" class="field-button field-button-end" data-clear-field>
+                <i class="icon icon-times"></i>
+            </button>
+            <button type="button" class="field-button field-button-end" data-calendar-open>
+                <i class="icon icon-calendar"></i>
+            </button>
+        </div>
+        {{ formFieldError|raw }}
+    </div>
+{% else %}
+    <div class="field pb-16">
+        {% if labeled %}
+            {{ form_label(formField) }}
+        {% endif %}
+        <div class="field-icon field-icon-double-postfix">
+            {{ form_widget(formField) }}
+            <button type="button" class="field-button field-button-end" data-clear-field>
+                <i class="icon icon-times"></i>
+            </button>
+            <button type="button" class="field-button field-button-end" data-calendar-open>
+                <i class="icon icon-calendar"></i>
+            </button>
+        </div>
+    </div>
+{% endif %}

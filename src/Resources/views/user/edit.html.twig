@@ -1,0 +1,205 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Редактирование пользователя'|trans %}
+
+{% block head_title %}
+    head title
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Users edit{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    {% set actions = [
+        {
+            'widget': 'form',
+            'type': 'submit',
+            'name': 'submit',
+            'value': 'Сохранить',
+            'class': 'button-solid button-primary mr-16'
+        },
+        {
+            'widget': 'link',
+            'value': 'Отмена',
+            'class': 'button-solid button-secondary',
+            'path': app.request.get('fromUrl') ?? path('chs_list')
+        },
+    ] %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="{{ path('user_list') }}">{% trans %}Пользователи{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Редактирование{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{{ user.fio ?? user.username }}</h1>
+                </div>
+            </div>
+
+            <div class="col-12">
+                {{ form_start(form) }}
+                {% form_theme form '@User/helpers/formErrors.html.twig' %}
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="infoblock infoblock-editable accent mb-16">
+                                <div class="infoblock-title">
+                                    <h3>Данные пользователя</h3>
+                                </div>
+                                <div class="infoblock-content">
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.username) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.email) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="infoblock infoblock-editable accent mb-16">
+                                <div class="infoblock-title">
+                                    <h3>Права доступа</h3>
+                                </div>
+                                <div class="infoblock-content">
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="field pb-16">
+                                                    {{ form_label(form.role) }}
+                                                    {{ form_widget(form.role) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-12 col-lg-6">
+
+
+
+                            <div class="infoblock infoblock-editable accent mb-16">
+                                <div class="infoblock-title">
+                                    <h3>Персональные данные</h3>
+                                </div>
+                                <div class="infoblock-content">
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.lastname) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.name) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.patronymic) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.workplace) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.duty) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ include('@User/helpers/formDateField.html.twig', {
+                                                    'formField': form.birthdate
+                                                }) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.phone) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="sticky-footer">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center">
+                                            {% include '@User/actions.html.twig' with {'actions': actions } %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

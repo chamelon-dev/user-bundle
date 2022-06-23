@@ -1,0 +1,160 @@
+<script>/*<![CDATA[*/
+
+$(document).ready(function() {
+
+    // инициализация модального окна с подтверждением действия ("вы уверены?")
+    $('#confirm-action').on('show.modal', function(event) {
+
+        let $relatedTarget = $(event.relatedTarget);
+
+        let $this = $(this);
+        let href = $relatedTarget.data('href');
+        if (typeof href === "undefined") {
+            console.log('missing data-href attribute');
+        }
+        $this.find('.btn-ok').attr('href', href);
+
+        let title = $relatedTarget.data('title');
+        let $modalTitle = $this.find('.modal-title');
+        if (typeof title !== "undefined") {
+            $modalTitle.text(title);
+        } else {
+            $modalTitle.text($modalTitle.data('default-text'))
+        }
+
+        let body = $relatedTarget.data('body');
+        let $modalBody = $this.find('.modal-body');
+        if (typeof body !== "undefined") {
+            $modalBody.html(body);
+        } else {
+            $modalBody.html($modalBody.data('default-text'))
+        }
+
+        let ok = $relatedTarget.data('ok');
+        let $modalOk = $this.find('.modal-footer > .btn-ok');
+        if (typeof ok !== "undefined") {
+            $modalOk.text(ok);
+        } else {
+            $modalOk.text($modalOk.data('default-text'))
+        }
+
+        let cancel = $relatedTarget.data('cancel');
+        let $modalCancel = $this.find('.modal-footer > button');
+        if (typeof cancel !== "undefined") {
+            $modalCancel.text(cancel);
+        } else {
+            $modalCancel.text($modalCancel.data('default-text'))
+        }
+
+        let okClass = $relatedTarget.data('okclass');
+        if (typeof okClass !== "undefined") {
+            $modalOk
+                .removeClass('button-primary')
+                .removeClass('button-danger')
+                .removeClass('button-secondary')
+                .removeClass('button-success')
+                .addClass(okClass)
+            ;
+        } else {
+            $modalOk
+                .removeClass('button-danger')
+                .removeClass('button-secondary')
+                .removeClass('button-success')
+                .addClass('button-primary')
+            ;
+        }
+    });
+
+    $('#signing').on('hide.modal', function(e) {
+        if (typeof signingTime !== "undefined") {
+            clearInterval(signingTime);
+        }
+    });
+
+    // инициализация модального окна с ифреймом (подписание ЭЦП).
+    $('#signing').on('show.modal', function(e) {
+        let $this = $(this);
+        let $relatedTarget = $(e.relatedTarget);
+
+        signingTime = setInterval(function() {
+            let iframeContents = document.getElementById('signing_iframe').contentWindow.document;
+            let $progressBar = $(iframeContents).find('.progress-bar');
+            if ($progressBar.length) {
+                // признак подписания определяется по наличию слова "Сохранено" в прогресс-баре.
+                if ($progressBar.text() === 'Сохранено') {
+                    clearInterval(signingTime);
+                    let $signedOkButton = $('#signed-ok');
+                    $signedOkButton.fadeIn('slow');
+                }
+            }
+        }, 2000);
+
+
+        let doc = document.getElementById('signing_iframe').contentWindow.document;
+        doc.open();
+        doc.write('<p>Загрузка...</p>');
+        doc.close();
+        let iframeSrc = $relatedTarget.data('iframesrc');
+        $('#signing_iframe').attr('src', iframeSrc);
+
+        let title = $relatedTarget.data('title');
+        let $modalTitle = $this.find('.modal-title');
+        if (typeof title !== "undefined") {
+            $modalTitle.text(title);
+        } else {
+            $modalTitle.text($modalTitle.data('default-text'))
+        }
+
+        let preText = $relatedTarget.data('pretext');
+        let $modalPreText = $this.find('#iframe-pretext');
+        if (typeof preText !== "undefined") {
+            $modalPreText.text(preText);
+        } else {
+            $modalPreText.text($modalPreText.data('default-text'))
+        }
+
+        let ok = $relatedTarget.data('ok');
+        let okHref = $relatedTarget.data('okhref');
+        let $modalOk = $this.find('.modal-footer > .btn-ok');
+        if (typeof ok !== "undefined") {
+            $modalOk.text(ok);
+        } else {
+            $modalOk.text($modalOk.data('default-text'))
+        }
+        if (typeof okHref !== "undefined") {
+            $modalOk.attr('href', okHref);
+        }
+
+        let cancel = $relatedTarget.data('cancel');
+        let $modalCancel = $this.find('.modal-footer > button');
+        if (typeof cancel !== "undefined") {
+            $modalCancel.text(cancel);
+        } else {
+            $modalCancel.text($modalCancel.data('default-text'))
+        }
+
+        let okClass = $relatedTarget.data('okclass');
+        if (typeof okClass !== "undefined") {
+            $modalOk
+                .removeClass('button-primary')
+                .removeClass('button-danger')
+                .removeClass('button-secondary')
+                .removeClass('button-success')
+                .addClass(okClass)
+            ;
+        } else {
+            $modalOk
+                .removeClass('button-danger')
+                .removeClass('button-secondary')
+                .removeClass('button-success')
+                .addClass('button-primary')
+            ;
+
+        }
+    });
+
+});
+
+
+
+/*]]>*/</script>

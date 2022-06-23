@@ -1,0 +1,65 @@
+{% extends '@User/page.html.twig' %}
+
+{% block title %}{{ 'Logout'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{#    <style>{{ include('@User/css/sigin.css.twig') }}</style>#}
+{% endblock %}
+
+{% block body_class %}text-center bg-login{% endblock %}
+
+{% block body %}
+    <form class="form-signin card card-login p-4" method="post">
+        <div class="text-center">
+            <div class="rounded-circle p-2 m-auto logo"></div>
+        </div>
+        <h4 class="mb-3 font-weight-normal text-center my-3">{{ 'app_name'|trans }}</h4>
+        <div class="alert alert-danger">Вы успешно вышли из учетной записи.</div>
+        <a class="btn btn-primary btn-block" href="{{ login_path }}">{{ 'Log in!'|trans }}</a>
+    </form>
+
+{% endblock %}
+
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Войти!</title>#}
+{#    <link rel="icon" type="image/png" href="/bundles/hydraauth/images/logo-32-32-v2.png" />#}
+{#    <style type="text/css"></style>#}
+
+{#</head>#}
+{#<body id="hold-transition sidebar-mini" class="text-center bg-login" style="min-height: 100vh">#}
+{#<div id="wrapper">#}
+{#    <div class="container-fluid">#}
+{#        <div class="row">#}
+{#            <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">#}
+{#                <form action="/oauth/login" class="form-signin card card-login p-4" method="post">#}
+{#                    <div class="text-center">#}
+{#                        <img class="rounded-circle p-2" width="100" src="/bundles/hydraauth/images/logo-200-200-v2.png">#}
+{#                    </div>#}
+{#                    <h5 class="mb-3 font-weight-normal text-center my-3">Пожалуйста авторизуйтесь</h5>#}
+{#                    <div class="row mb-2">#}
+{#                        <div class="col-md-12">#}
+{#                        </div>#}
+{#                    </div>#}
+
+{#                    <div class="form-group">#}
+{#                        <label for="inputUsername" class="sr-only">Логин</label>#}
+{#                        <input type="text" value="" name="username" id="inputUsername" class="form-control" placeholder="Логин" required autofocus>#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <label for="inputPassword" class="sr-only">Пароль</label>#}
+{#                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Пароль" required>#}
+{#                        <input type="hidden" name="_csrf_token" value="WwzsSeIF5XfUe_DU1RgeOsOSLk5tvt4SANIaODfAyjk">#}
+{#                        <input type="hidden" name="challenge" value="b81e1c3b73b64e3d9a98af218279cbf3">#}
+{#                    </div>#}
+{#                    <button class="btn btn-primary btn-block" type="submit">Войти</button>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}

@@ -1,0 +1,19 @@
+[
+  {
+    "username": "superadmin",
+    "email": "super@admin.ru",
+    "password": "P@ssw0rd",
+    "roles": [
+      {
+        "name": "ROLE_SUPER_ADMIN",
+        "title": "Супер администратор",
+        "permissions": [
+          {
+            "name": "can everything",
+            "title": "может делать все"
+          }
+        ]
+      }
+    ]
+  }
+]

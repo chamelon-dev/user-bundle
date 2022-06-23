@@ -1,0 +1,66 @@
+<header class="header">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="navbar">
+                    <div class="logo" style="max-width: 30rem;">
+                        <a href="/">{% trans %}Users bundle{% endtrans %}</a>
+                    </div>
+                    <button class="button button-icon" data-toggle-header>
+                        <i class="icon icon-bars"></i>
+                    </button>
+                    <nav class="horizontal-menu">
+{#                        {% if app.user %}#}
+{#                        <div class="menu-left">#}
+{#                        {{#}
+{#                            knp_menu_render('primary', {#}
+{#                                'currentClass': 'active',#}
+{#                                'template': 'menu/nav.html.twig'#}
+{#                            })#}
+{#                        }}#}
+{#                        </div>#}
+{#                        {% endif %}#}
+
+{#                        {% if app.user %}#}
+{#                        <div class="menu-right">#}
+{#                            <ul>#}
+{#                                <li tabindex="0">#}
+{#                                    <a href="#" data-prevent>#}
+{#                                        <i class="icon icon-user menu-prefix"></i>#}
+{#                                        <span class="menu-label">{{ app.user.userInfo.name }}</span>#}
+{#                                        <i class="icon icon-chevron-down menu-postfix"></i>#}
+{#                                    </a>#}
+{#                                    <div class="menu-submenu">#}
+{#                                        <ul>#}
+{#                                            {% if is_granted('UPS settings services') %}#}
+{#                                            <li>#}
+{#                                                <a href="{{ path('settings_services_list') }}">#}
+{#                                                    <span class="menu-label">#}
+{#                                                        {% trans %}Settings{% endtrans %}#}
+{#                                                    </span>#}
+{#                                                </a>#}
+{#                                            </li>#}
+{#                                            {% endif %}#}
+{#                                            <li>#}
+{#                                                <a href="{{ path('logout') }}">#}
+{#                                                    <span class="menu-label">#}
+{#                                                        {% trans %}Logout{% endtrans %}#}
+{#                                                    </span>#}
+{#                                                </a>#}
+{#                                            </li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </div>#}
+
+{#                        {% endif %}#}
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>

@@ -1,0 +1,20 @@
+{% if breadcrumbs is defined and breadcrumbs is not null %}
+    <div class="breadcrumbs">
+        <ul class="breadcrumbs-list">
+            {% for page in breadcrumbs %}
+                {% if loop.last %}
+                    <li class="breadcrumbs-item breadcrumbs-item-active">
+                        {{ page.name|trans }}
+                    </li>
+                {% else %}
+                    <li class="breadcrumbs-item">
+                        <a href="{{ page.link }}" class="breadcrumbs-link">
+                            {% if loop.first %}<i class="fa fa-dashboard"></i>{% endif %}
+                            {{ page.name|trans }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

@@ -1,0 +1,46 @@
+{% extends '@User/base.html.twig' %}
+
+{% block title %}{{ '403'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{#    <style>{{ include('@User/css/sigin.css.twig') }}</style>#}
+{% endblock %}
+
+{% block body_content %}
+
+    <body class="layout-fluid">
+    <div class="wrapper-outer">
+        <div class="wrapper">
+            <div class="content">
+                <div class="container-fluid h-100">
+                    <div class="row h-100">
+                        <div class="col-12 h-100">
+                            <div class="e403">
+                                <div class="e403-top">
+                                    <div class="row h-100">
+                                        <div class="col-10 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
+                                            <div class="e403-image">
+                                                <img src="{{ asset('bundles/user/images/e403.svg') }}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="e402-bottom">
+                                    <div class="row">
+                                        <div class="col-12 col-xl-10 offset-xl-1">
+                                            <div class="e403-title">Доступ запрещен</div>
+                                            <div class="e403-description">У вас нет прав для просмотра этой страницы</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+
+{% endblock %}

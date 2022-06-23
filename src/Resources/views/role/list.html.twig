@@ -1,0 +1,184 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Список ролей'|trans %}
+
+{% block head_title %}
+    Список ролей
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Список ролей{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Роли{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{% trans %}Список ролей{% endtrans %}</h1>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="tabnav">
+                    {{ knp_menu_render('user.list', {'currentAsLink': false, 'template': '@User/menu/tab.html.twig' }) }}
+                </div>
+            </div>
+
+            <div class="col-12">
+                {% if roles|length > 0 %}
+                    <div class="table-container">
+                        <table class="table-empty-cells td-valign-top" data-fix-right-col="true">
+                            <thead>
+                            <th>{% trans %}Машинное имя{% endtrans %}</th>
+                            <th>{% trans %}Название{% endtrans %}</th>
+                            <th>{% trans %}Описание{% endtrans %}</th>
+                            <th>{% trans %}Пермишны{% endtrans %}</th>
+                            <th>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                            {% for role in roles %}
+                                <tr>
+                                    <td>{{ role.name }}</td>
+                                    <td>{{ role.title }}</td>
+                                    <td>{{ role.description }}</td>
+                                    <td>
+                                        {% if role.permissions.values is not empty %}
+                                            <ul>
+                                            {% for permission in role.permissions.values %}
+                                                <li>
+                                                    {{ permission.name }}
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td class="text-right">
+
+                                        <a class="td-link" href="{{ path('role_view', { 'id': role.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-eye"></i>
+                                        </a>
+
+                                        <a class="td-link" href="{{ path('role_edit', { 'id': role.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-pencil"></i>
+                                        </a>
+
+{#                                        <a class="td-link" href="{{ path('user_delete', { 'id': user.id, 'fromUrl': currentPath }) }}">#}
+{#                                            <i class="icon icon-trash"></i>#}
+{#                                        </a>#}
+
+                                        <a class="td-link"
+                                           href="#"
+                                           data-toggle="modal"
+                                           data-target="#confirm-action"
+                                           data-href="{{ path('role_delete', {
+                                               'id': role.id,
+                                               'fromUrl': currentPath
+                                           }) }}"
+                                           data-body="Вы уверены, что хотите удалить роль {{ role.name }}?"
+                                           data-ok="{% trans %}Delete{% endtrans %}"
+                                           data-okclass="button-danger"
+                                        >
+                                            <i class="icon icon-trash"></i>
+                                        </a>
+
+
+
+{#                                        {% if is_granted('CHS chs view') %}#}
+{#                                            <a class="td-link" href="{{ path('chs_view', { 'id': chs.id, 'fromUrl': currentPath }) }}">#}
+{#                                                <i class="icon icon-eye"></i>#}
+{#                                            </a>#}
+{#                                        {% endif %}#}
+{#                                        {% if is_granted('CHS chs edit') %}#}
+{#                                            <a class="td-link" href="{{ path('chs_edit', { 'id': chs.id, 'fromUrl': currentPath }) }}">#}
+{#                                                <i class="icon icon-pencil"></i>#}
+{#                                            </a>#}
+{#                                        {% endif %}#}
+{#                                        {% if is_granted('CHS chs delete') %}#}
+{#                                            <a class="td-link"#}
+{#                                               data-toggle="modal"#}
+{#                                               data-target="#confirm-action"#}
+{#                                               data-href="{{ path('chs_delete', {#}
+{#                                                   'id': chs.id,#}
+{#                                                   'fromUrl': currentPath#}
+{#                                               }) }}"#}
+{#                                               data-body="Вы уверены, что хотите удалить ЧС<br>&laquo;{{ chs.name|raw }}&raquo;?"#}
+{#                                               data-ok="{% trans %}Delete{% endtrans %}"#}
+{#                                               data-okclass="button-danger"#}
+{#                                            >#}
+{#                                                <i class="icon icon-trash"></i>#}
+{#                                            </a>#}
+{#                                        {% endif %}#}
+
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    {% trans %}The list is empty.{% endtrans %}
+{#                    {% if not canSeeSomething %}#}
+{#                        <div class="alert alert-danger" role="alert" style="width:50%;">#}
+{#                            {% trans %}User has no region.{% endtrans %}#}
+{#                        </div>#}
+{#                    {% else %}#}
+{#                        <p class="mb-0 mt-3">#}
+{#                            {% if ((filtersIsEmpty is not defined) or (filtersIsEmpty == true)) %}#}
+{#                                {% trans %}The list is empty.{% endtrans %}#}
+{#                            {% else %}#}
+{#                                {% trans %}No results found.{% endtrans %}#}
+{#                            {% endif %}#}
+{#                        </p>#}
+{#                    {% endif %}#}
+                {% endif %}
+
+            </div>
+
+            <div class="col-12">
+                <div class="pagenav">
+                    <div class="row">
+                        <div class="col-12 col-xl-6">
+                            {{ include('@User/helpers/pagenavCounter.html.twig', { 'entities': roles } ) }}
+                            {{ include('@User/helpers/pagenavResults.html.twig', {
+                                'currentLimit': currentLimit,
+                                'limitsList': limitsList
+                            } ) }}
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <div class="pagenav-pagination">
+                                {{ knp_pagination_render(roles) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

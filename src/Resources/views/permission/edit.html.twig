@@ -1,0 +1,197 @@
+{% extends '@User/page.html.twig' %}
+
+{% block head_title %}
+    Редактирование пермишна
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Редактирование пермишна{% endtrans %}</h3>{% endblock %}
+
+{#{% block head_title %}#}
+{#    {{ title }} | {% trans %}CHS service{% endtrans %}#}
+{#{% endblock %}#}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body_content %}
+
+    {% set actions = [
+        {
+            'widget': 'form',
+            'type': 'submit',
+            'name': 'submit',
+            'value': 'Сохранить',
+            'class': 'button-solid button-primary mr-16'
+        },
+        {
+            'widget': 'link',
+            'value': 'Отмена',
+            'class': 'button-solid button-secondary',
+            'path': app.request.get('fromUrl') ?? path('role_list')
+        },
+    ] %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="{{ path('permission_list') }}">{% trans %}Пермишны{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Редактирование{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{% trans %}Редактирование пермишна{% endtrans %}</h1>
+                </div>
+            </div>
+
+            <div class="col-12">
+                {{ form_start(form) }}
+                {% form_theme form '@User/helpers/formErrors.html.twig' %}
+                    <div class="row">
+
+                        <div class="col-6 col-lg-6">
+                            <div class="infoblock infoblock-editable accent">
+                                <div class="infoblock-title">
+                                    <h3>{% trans %}Общие данные{% endtrans %}</h3>
+                                </div>
+                                <div class="infoblock-content">
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.name) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.title) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infoblock-row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{ form_row(form.description) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+{#                                    <div class="infoblock-row">#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-12">#}
+{#                                                {{ form_row(form.externalCode) }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+
+{#                                    <div class="infoblock-row">#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-12">#}
+{#                                                <div class="field pb-16">#}
+{#                                                    {{ form_label(form.zone) }}#}
+{#                                                    {{ form_widget(form.zone) }}#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+
+{#                                    <div class="infoblock-row">#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-12">#}
+{#                                                <div class="field pb-16">#}
+{#                                                    {{ form_label(form.character) }}#}
+{#                                                    {{ form_widget(form.character) }}#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+
+{#                                    <div class="infoblock-row">#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-12">#}
+{#                                                <div class="field pb-16">#}
+{#                                                    {{ form_label(form.regionCode) }}#}
+{#                                                    <div class="field-icon field-icon-postfix">#}
+{#                                                        {{ form_widget(form.regionCode) }}#}
+{#                                                        <button type="button" class="field-button field-button-end" data-clear-field>#}
+{#                                                            <i class="icon icon-times"></i>#}
+{#                                                        </button>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+
+                                </div>
+
+                            </div>
+                        </div>
+
+{#                        <div class="col-6 col-lg-6">#}
+{#                            <div class="infoblock infoblock-editable accent">#}
+
+{#                                <div class="infoblock-title">#}
+{#                                    <h3>{% trans %}Additional data{% endtrans %}</h3>#}
+{#                                </div>#}
+
+{#                                <div class="infoblock-row">#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-12">#}
+{#                                            <div class="field pb-16">#}
+{#                                                {{ form_label(form.permissions) }}#}
+{#                                                {{ form_widget(form.permissions) }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+
+{#                            </div>#}
+{#                        </div>#}
+
+                        <div class="sticky-footer">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="left">
+                                                {% include '@User/actions.html.twig' with {'actions': actions } %}
+                                            </div>
+{#                                            <div class="right">#}
+{#                                                {% include 'actions.html.twig' with {'actions': actionsRight } %}#}
+{#                                            </div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,3 @@
+user_bundle:
+  resource: ../../vendor/bor-a-dovech/user-bundle/src/Controller/
+  type: annotation

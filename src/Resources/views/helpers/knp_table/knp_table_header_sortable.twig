@@ -1,0 +1,15 @@
+{% if collection is defined and names is defined %}
+    <tr>
+        {% for valueMap in names %}
+            {% if valueMap[0] is defined and valueMap[1] is defined  %}
+                {% if valueMap[0]!='' and valueMap[1]!='' %}
+                    <th{% if collection.isSorted(valueMap[1]) %} class="sorted {% if valueMap[2] is defined %}{{ valueMap[2] }}{% endif %}" {% elseif valueMap[2] is defined %} class="{{ valueMap[2] }}" {% endif %}>
+                        {{ knp_pagination_sortable(collection, valueMap[0]|trans, valueMap[1]) }}
+                    </th>
+                {% else %}
+                    <th {% if valueMap[2] is defined %} class="{{ valueMap[2] }}" {% endif %}>{{ valueMap[0]|trans }}</th>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endif %}

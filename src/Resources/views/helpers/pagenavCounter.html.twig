@@ -1,0 +1,6 @@
+<div class="pagenav-counter">
+    {% set num = entities.paginationData.current %}
+    {% set all = entities.paginationData.last %}
+
+    {{ 'Стр. %num% из %all%'|trans|replace({ '%num%': num, '%all%': all }) }}
+</div>

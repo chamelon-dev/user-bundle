@@ -1,0 +1,125 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Список пермишнов'|trans %}
+
+{% block head_title %}
+    Список пермишнов
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Список пермишнов{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Пермишны{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{% trans %}Список пермишнов{% endtrans %}</h1>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="tabnav">
+                    {{ knp_menu_render('user.list', {'currentAsLink': false, 'template': '@User/menu/tab.html.twig' }) }}
+                </div>
+            </div>
+
+            <div class="col-12">
+                {% if permissions|length > 0 %}
+                    <div class="table-container">
+                        <table class="table-empty-cells td-valign-top" data-fix-right-col="true">
+                            <thead>
+                            <th>{% trans %}Машинное имя{% endtrans %}</th>
+                            <th>{% trans %}Название{% endtrans %}</th>
+                            <th>{% trans %}Описание{% endtrans %}</th>
+                            <th>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                            {% for permission in permissions %}
+                                <tr>
+                                    <td>{{ permission.name }}</td>
+                                    <td>{{ permission.title }}</td>
+                                    <td>{{ permission.description }}</td>
+
+                                    <td class="text-right">
+
+                                        <a class="td-link" href="{{ path('permission_view', { 'id': permission.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-eye"></i>
+                                        </a>
+
+                                        <a class="td-link" href="{{ path('permission_edit', { 'id': permission.id, 'fromUrl': currentPath }) }}">
+                                            <i class="icon icon-pencil"></i>
+                                        </a>
+
+                                        <a class="td-link"
+                                           href="#"
+                                           data-toggle="modal"
+                                           data-target="#confirm-action"
+                                           data-href="{{ path('permission_delete', {
+                                               'id': permission.id,
+                                               'fromUrl': currentPath
+                                           }) }}"
+                                           data-body="Вы уверены, что хотите удалить пермишн {{ permission.name }}?"
+                                           data-ok="{% trans %}Delete{% endtrans %}"
+                                           data-okclass="button-danger"
+                                        >
+                                            <i class="icon icon-trash"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    {% trans %}The list is empty.{% endtrans %}
+                {% endif %}
+
+            </div>
+
+            <div class="col-12">
+                <div class="pagenav">
+                    <div class="row">
+                        <div class="col-12 col-xl-6">
+                            {{ include('@User/helpers/pagenavCounter.html.twig', { 'entities': permissions } ) }}
+                            {{ include('@User/helpers/pagenavResults.html.twig', {
+                                'currentLimit': currentLimit,
+                                'limitsList': limitsList
+                            } ) }}
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <div class="pagenav-pagination">
+                                {{ knp_pagination_render(permissions) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,23 @@
+<div class="modal" id="confirm-action" tabindex="-1">
+    <div class="modal-dialog" style="width:30%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" data-default-text="{% trans %}Action confirmation{% endtrans %}"></h3>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="min-height:7.5rem" data-default-text="{% trans %}Are you sure?{% endtrans %}"></div>
+            <div class="modal-footer justify-content-start">
+                <a
+                    class="button button-solid button-primary btn-ok mr-16"
+                    data-default-text="{% trans %}Confirm{% endtrans %}">
+                </a>
+                <button
+                    type="button"
+                    class="button button-solid button-secondary btn-cancel"
+                    data-dismiss="modal"
+                    data-default-text="{% trans %}Cancel{% endtrans %}">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

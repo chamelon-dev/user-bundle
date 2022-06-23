@@ -1,0 +1,162 @@
+{% extends '@User/page.html.twig' %}
+
+{% set title = 'Просмотр роли'|trans %}
+
+{% block head_title %}
+    Просмотр роли
+{#    {% trans %}Users list{% endtrans%} | {% trans %}CHS service{% endtrans %}#}
+{% endblock %}
+
+{% block body_title %}<h3>{% trans %}Просмотр роли{% endtrans %}</h3>{% endblock %}
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {# Хлебные крошки #}
+            <div class="col-12">
+                <div class="breadcrumbs">
+                    <ul class="breadcrumbs-list">
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="/">{% trans %}Главная{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item">
+                            <a class="breadcrumbs-link" href="{{ path('role_list') }}">{% trans %}Роли{% endtrans %}</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item-active">
+                            {% trans %}Просмотр{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% block body_content_flash %}
+                {{ include('@User/flash.html.twig') }}
+            {% endblock %}
+
+            {# Заголовок и кнопка "добавить" #}
+            <div class="col-12">
+                <div class="title">
+                    <h1>{% trans %}Просмотр роли{% endtrans %}</h1>
+                </div>
+            </div>
+
+            {# скопированная инфа  #}
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Данные</h3>
+                            </div>
+                            <div class="infoblock-content">
+
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Id</strong></div>
+                                        <div class="col-8">
+                                            {{ role.id }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Машинное имя</strong></div>
+                                        <div class="col-8">
+                                            {{ role.name }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Название</strong></div>
+                                        <div class="col-8">
+                                            {{ role.title }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-4"><strong>Описание</strong></div>
+                                        <div class="col-8">
+                                            {{ role.description ?? '-' }}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Пермишны</h3>
+                            </div>
+                            <div class="infoblock-content">
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {% if role.permissions.values is not empty %}
+                                                <ul>
+
+                                                    {% for permission in role.permissions.values %}
+                                                        <li>
+                                                            {{ permission.name }}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                (нет)
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="infoblock accent mb-16">
+                            <div class="infoblock-title">
+                                <h3>Пользователи с этой ролью</h3>
+                            </div>
+                            <div class="infoblock-content">
+                                <div class="infoblock-row">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {% if users is not empty %}
+                                                <ul>
+
+                                                {% for user in users %}
+                                                    <li>
+                                                        <a href="{{ path('user_view', { 'id': user.id } ) }}">{{ user.username }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                (нет)
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

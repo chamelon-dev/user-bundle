@@ -1,0 +1,55 @@
+{% set ulClass = ulClass ?? '' %}
+{% set liClass = liClass ?? '' %}
+{% set ulStyle = ulStyle ?? '' %}
+{% set liStyle = liStyle ?? '' %}
+{% set key = key ?? null %}
+
+{% set previewCount = previewCount ?? 10 %}
+{% set minimumCountToShowSpoiler = 5 %}
+{# если число элементов меньше 15, не имеет смысла показывать спойлер - покажем их все #}
+
+{% if entities|length <= previewCount + minimumCountToShowSpoiler %}
+
+    <ul class="{{ ulClass }}" style="{{ ulStyle }}">
+        {% for entity in entities %}
+            {% if key is null %}
+                <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity }}</li>
+            {% else %}
+                <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity[key] ?? '' }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+{% else %}
+
+        <div class="collapsible">
+            <div class="collapsible-visible">
+                <ul class="{{ ulClass }}" style="{{ ulStyle }}">
+                    {% for entity in entities|slice(0, previewCount) %}
+                        {% if key is null %}
+                            <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity }}</li>
+                        {% else %}
+                            <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity[key] ?? '' }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="collapsible-hidden collapsible-expand">
+                <ul class="{{ ulClass }}" style="{{ ulStyle }}">
+                    {% for entity in entities|slice(previewCount) %}
+                        {% if key is null %}
+                            <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity }}</li>
+                        {% else %}
+                            <li class="{{ liClass }}" style="{{ liStyle }}">{{ entity[key] ?? '' }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="collapsible-footer text-center">
+                <button type="button" class="button button-icon collapsible-button">
+                    <i class="icon icon-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+
+{% endif %}

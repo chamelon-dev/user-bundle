@@ -1,0 +1,19 @@
+<script>/*<![CDATA[*/
+
+$(document).ready(function() {
+
+    // переадресация при смене количества результатов на странице
+    let $pageCount = $('select[name="page_count"]');
+    if ($pageCount.length) {
+        $pageCount.on('change.select2', function (e) {
+            let val = $pageCount.val();
+            let url = new URL(window.location.href);
+            url.searchParams.set('limit', val);
+            url.searchParams.set('page', '1');
+            window.location.href = url.href;
+        });
+    }
+
+});
+
+/*]]>*/</script>

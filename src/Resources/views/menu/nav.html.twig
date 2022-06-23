@@ -1,0 +1,73 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% block root %}
+    {% set listAttributes = item.childrenAttributes %}
+    {%- set classes = [] %}
+    {%- set classes = options.classes is defined ? classes|merge([options.classes]) : classes %}
+    {%- set classes = listAttributes.class is defined ? classes|merge([listAttributes.class]) : classes %}
+    {%- set listAttributes = listAttributes|merge({'class': classes|join(' ')}) %}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import _self as knp_menu %}
+        <ul>
+            {{ block('children') }}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.displayed %}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- set attributes = item.attributes|merge({'class': classes|join(' ')}) %}
+
+        {% import _self as knp_menu %}
+        {%- if matcher.isCurrent(item) %}
+        <li class="{{ options.currentClass }}">
+            {{ block('linkElement') }}
+        </li>
+        {%- else %}
+        <li>
+            {{ block('linkElement') }}
+        </li>
+        {%- endif %}
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}{% import _self as knp_menu %}
+
+    {%- set classes = item.linkAttributes.class is defined ? [item.linkAttributes.class] : [] %}
+    {%- if matcher.isCurrent(item) %}
+        {%- set classes = classes|merge([options.currentClass]) %}
+    {%- endif %}
+
+    {%- set linkAttributes = item.linkAttributes|merge({'class': classes|join(' ')}) %}
+
+    {% if item.children is not empty and item.children|length == 1 %}
+        {%- set first_sub_item = item.children|first %}
+
+        <a href="{{ first_sub_item.uri }}"{{ knp_menu.attributes(linkAttributes) }}>
+            {{ block('label') }}
+        </a>
+
+    {% elseif item.children is not empty and item.children|length > 0 %}
+        {%- set item_id = item.linkAttributes.id is defined ? item.linkAttributes.id : '' %}
+        {%- set dropdownClasses = classes|merge(['dropdown-toggle']) %}
+        {%- set dropdownLinkAttributes = item.linkAttributes|merge({'class': dropdownClasses|join(' ')}) %}
+    {% else %}
+        <a href="{{ item.uri }}"{{ knp_menu.attributes(linkAttributes) }}>
+            <i class="icon {{ item.attribute('icon') }} menu-prefix"></i>
+            <span class="menu-label">{{ block('label') }}</span>
+        </a>
+    {% endif %}
+{% endblock %}

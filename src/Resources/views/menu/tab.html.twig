@@ -1,0 +1,94 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% block root %}
+    {% set listAttributes = item.childrenAttributes %}
+    {%- set classes = [''] %}
+    {%- set classes = options.classes is defined ? classes|merge([options.classes]) : classes %}
+    {%- set classes = listAttributes.class is defined ? classes|merge([listAttributes.class]) : classes %}
+    {%- set listAttributes = listAttributes|merge({'class': classes|join(' ')}) %}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import _self as knp_menu %}
+
+        {%- set classes = item.linkAttributes.class is defined ? [item.linkAttributes.class] : [] %}
+        {%- if item.hasChildren() %}
+            {%- set classes = classes|merge(['nav nav-treeview']) %}
+        {%- endif %}
+        {%- set listAttributes = item.linkAttributes|merge({'class': classes|join(' ')}) %}
+
+
+        {% if item.isRoot() %}
+
+        <div class="tabnav">
+            <nav class="tabnav-menu">
+                <ul>
+                    {{ block('children') }}
+                </ul>
+            </nav>
+        </div>
+        {% else %}
+            <ul{{ knp_menu.attributes(listAttributes) }}>
+                {{ block('children') }}
+            </ul>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.displayed %}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- if matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set classes = classes|merge(['menu-open']) %}
+        {%- endif %}
+
+
+        {%- set attributes = item.attributes|merge({'class': classes|join(' ')}) %}
+
+        {% import _self as knp_menu %}
+        {{ block('linkElement') }}
+        {{ block('list') }}
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}{% import _self as knp_menu %}
+    {%- set classes = item.linkAttributes.class is defined ? [item.linkAttributes.class] : [] %}
+    {%- if matcher.isCurrent(item) %}
+        {%- set classes = classes|merge([options.currentClass]) %}
+    {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+        {%- set classes = classes|merge(['active']) %}
+    {%- endif %}
+
+    {%- if item.actsLikeFirst %}
+        {%- set classes = classes|merge([options.firstClass]) %}
+    {%- endif %}
+
+    {%- if item.actsLikeLast %}
+        {%- set classes = classes|merge([options.lastClass]) %}
+    {%- endif %}
+
+    {%- set linkAttributes = item.linkAttributes|merge({'class': classes|join(' ')}) %}
+    {%- if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+        {# not active #}
+        <li>
+            <a href="{{ item.uri }}" {{ knp_menu.attributes(linkAttributes) }}>{{ block('label')|trans }}</a>
+        </li>
+    {%- else %}
+        {# active #}
+        <li>
+            <a class="active" href="#" {{ knp_menu.attributes(linkAttributes) }}>{{ block('label')|trans }}</a>
+        </li>
+    {%- endif %}
+
+{% endblock %}

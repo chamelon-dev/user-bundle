@@ -1,0 +1,10 @@
+{% block form_label_errors %}
+    {# вывод ошибок убран из лейбла #}
+{% endblock %}
+
+{% block form_errors %}
+    {% for error in errors %}
+        <span class="field-hint">{{ error.message }}</span>
+    {% endfor %}
+{% endblock %}
+

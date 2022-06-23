@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>{% block title %}{{ 'Access Denied!'|trans }}{% endblock %}</title>
+    {% block stylesheets %}
+{#        <style>{{ include('@User/css/style.css.twig') }}</style>#}
+    {% endblock %}
+</head>
+<body id="hold-transition sidebar-mini"  class="bg-login" style="min-height: 100vh">
+{% block body_messages %}{{ include('@User/flash.html.twig') }}{% endblock %}
+<div id="wrapper" class="bg-login">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">
+                <form class="form-signin card card-login p-4" method="post">
+                    <div class="text-center">
+                        <div class="rounded-circle p-2 m-auto logo"></div>
+                    </div>
+                    <h4 class="mb-3 font-weight-normal text-center my-3">{{ 'app_name'|trans }}</h4>
+                    <div class="alert alert-danger">У пользователя "{{ app.user.username }}" не достаточно прав. Авторизуйтесь под другим пользователем.</div>
+                    <a class="btn btn-primary btn-block" href="/logout">{{ 'Logout'|trans }}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+
+{% endblock %}
+</body>
+</html>

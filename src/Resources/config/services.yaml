@@ -1,0 +1,72 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Pantheon\UserBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Entity,Migrations,Tests,Security/Event,Kernel.php}'
+
+    user_bundle.user.provider.entity:
+        alias: Pantheon\UserBundle\Security\User\UserProvider
+
+    user_bundle.authenticator.login_form:
+        alias: Pantheon\UserBundle\Security\Authenticator\LoginFormAuthenticator
+
+    user_bundle.handler.access_denied:
+        alias: Pantheon\UserBundle\Security\AccessDeniedHandler
+
+    Pantheon\UserBundle\Security\User\UserProvider:
+        class: Pantheon\UserBundle\Security\User\UserProvider
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $classOrAlias: Pantheon\UserBundle\Entity\User
+            $property: username
+
+    Pantheon\UserBundle\Security\Credentials\LocalCheckCredentialsService:
+        class: Pantheon\UserBundle\Security\Credentials\LocalCheckCredentialsService
+        arguments:
+            $config: []
+
+    Pantheon\UserBundle\Security\Permission\Provider\LocalPermissionProvider:
+        class: Pantheon\UserBundle\Security\Permission\Provider\LocalPermissionProvider
+        arguments:
+            $config:
+                projectDir: '%kernel.project_dir%'
+                permissionsFile: "%env(string:LOCAL_PERMISSIONS_FILE)%"
+            $cache: '@cache.app'
+            $logger: '@logger'
+
+    Pantheon\UserBundle\Security\Permission\Service\LocalPermissionService:
+        class: Pantheon\UserBundle\Security\Permission\Service\LocalPermissionService
+        arguments:
+            $permissionProvider: '@user_bundle.permission.provider.local'
+            $checkCredentialsService: '@user_bundle.service.credentials.local'
+            $cache: '@cache.app'
+            $logger: '@logger'
+
+    user_bundle.permission.service.local:
+        alias: Pantheon\UserBundle\Security\Permission\Service\LocalPermissionService
+
+    user_bundle.permission.provider.local:
+        alias: Pantheon\UserBundle\Security\Permission\Provider\LocalPermissionProvider
+
+    user_bundle.service.credentials.local:
+        alias: Pantheon\UserBundle\Security\Credentials\LocalCheckCredentialsService
+
+    # menu
+    Pantheon\UserBundle\Provider\MenuProvider:
+        arguments: ['@knp_menu.factory', '@event_dispatcher']
+        tags: ['knp_menu.provider']
+    Pantheon\UserBundle\Event\Listener\Menu\UserListener:
+        tags: [{ name: kernel.event_listener, event: 'app.menu.user.list', method: onMenu }]
+
+    # работа с сессиями
+    session.handler.pdo:
+        alias: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - '%env(DATABASE_URL)%'
+            - { lock_mode: 0, db_table: 'session' }
