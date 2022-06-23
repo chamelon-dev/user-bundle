@@ -1,6 +1,6 @@
 {
     "type": "symfony-bundle",
-    "name": "bor-a-dovech/user-bundle",
+    "name": "chamelon-dev/user-bundle",
     "description": "user bundle",
     "license": "proprietary",
     "require": {

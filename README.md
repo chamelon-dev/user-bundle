@@ -10,7 +10,7 @@ Composer.json:
       "repositories": [
         {
           "type": "vcs",
-          "url": "https://github.com/bor-a-dovech/user-bundle"
+          "url": "https://github.com/chamelon-dev/user-bundle"
         }
       ]
    ...
@@ -18,7 +18,7 @@ Composer.json:
 ```
 Добавление бандла:
 ```bash
-composer require bor-a-dovech/user-bundle
+composer require chamelon-dev/user-bundle
 ```
 
 #### Конфигурирование бандла:
@@ -40,7 +40,7 @@ doctrine:
         type: annotation
         is_bundle: false
         prefix: 'Pantheon\UserBundle\Entity'
-        dir: "%kernel.root_dir%/../vendor/bor-a-dovech/user-bundle/src/Entity"
+        dir: "%kernel.root_dir%/../vendor/chamelon-dev/user-bundle/src/Entity"
         alias: NewsTop
 ```
 
@@ -88,7 +88,7 @@ security:
 ##### config/routes/user_bundle.yaml
 ```yaml
 user_bundle:
-  resource: ../../vendor/bor-a-dovech/user-bundle/src/Controller/
+  resource: ../../vendor/chamelon-dev/user-bundle/src/Controller/
   type: annotation
 ```
 
