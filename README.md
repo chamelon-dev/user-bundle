@@ -126,3 +126,8 @@ php bin/console app:load-user-fixtures
  ```
 
 После этого создается пользователь (superadmin:P@ssw0rd) с неограниченными правами. 
+
+Сохранение пермишнов на основе аннотаций контроллеров:
+ ```bash
+php bin/console app:update-permissions
+ ```
