@@ -19,14 +19,14 @@ class LoginController extends AbstractController
         $this->security = $security;
     }
 
-    /**
-     * @Route("/logout", name="api_logout", methods={"GET"})
-     */
-    public function logout() : JsonResponse
-    {
-        return new JsonResponse([
-            'id' => $this->security->getUser()->getId(),
-            'username' => $this->security->getUser()->getUsername(),
-        ]);
-    }
+//    /**
+//     * @Route("/logout", name="api_logout", methods={"GET"})
+//     */
+//    public function logout() : JsonResponse
+//    {
+//        return new JsonResponse([
+//            'id' => $this->security->getUser()->getId(),
+//            'username' => $this->security->getUser()->getUsername(),
+//        ]);
+//    }
 }

@@ -6,20 +6,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pantheon\UserBundle\Entity\Role;
 use Pantheon\UserBundle\Normalizer\RoleNormalizer;
 use Pantheon\UserBundle\Repository\RoleRepository;
-use Pantheon\UserBundle\Repository\UserRepository;
 use Pantheon\UserBundle\Service\ResultJsonService;
 use Knp\Component\Pager\PaginatorInterface;
-use PHPUnit\Util\Json;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * @Route("/api/role")
+ * @SWG\Tag(name="role")
  */
 class RoleController extends AbstractController
 {
@@ -38,9 +37,13 @@ class RoleController extends AbstractController
 
     /**
      * Список ролей.
-     *
-     * @Route("/list", name="api_role_list", methods={"GET"})
      * @Route("/", name="rest_api_role_list", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Список ролей.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function list(
         Request $request,
@@ -73,8 +76,13 @@ class RoleController extends AbstractController
     /**
      * Удаление роли.
      *
-     * @Route("/{id}/delete", name="api_role_delete", methods={"GET"})
      * @Route("/{id}", name="rest_api_role_delete", methods={"DELETE"})
+     * @SWG\Delete(
+     *     summary="Удаление роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное удаление.")
+     * )
      */
     public function delete(Role $role)
     {
@@ -85,8 +93,13 @@ class RoleController extends AbstractController
 
     /**
      * Просмотр карточки роли.
-     * @Route("/{id}/view", name="api_role_view", methods={"GET"})
      * @Route("/{id}", name="rest_api_role_view", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Просмотр карточки роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function view(Role $role) : JsonResponse
     {
@@ -101,11 +114,35 @@ class RoleController extends AbstractController
     /**
      * Добавление новой роли.
      *
-     * @Route("/add", name="api_role_add", methods={"POST"})
      * @Route("/", name="rest_api_role_add", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
+     *
+     * @SWG\Post(
+     *     summary="Добавление новой роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Машинное имя (уникальное поле, обязательно)."
+     * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Название на русском языке."
+     * )
+     * @SWG\Parameter(
+     *     name="description",
+     *     in="query",
+     *     type="string",
+     *     description="Описание."
+     * )
      */
     public function add(Request $request) : JsonResponse
     {
@@ -143,6 +180,31 @@ class RoleController extends AbstractController
      *
      * @param Role $role
      * @return JsonResponse
+     *
+     * @SWG\Put(
+     *     summary="Редактирование роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Машинное имя."
+     * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Название на русском языке."
+     * )
+     * @SWG\Parameter(
+     *     name="description",
+     *     in="query",
+     *     type="string",
+     *     description="Описание."
+     * )
      */
     public function put(Role $role, Request $request) : JsonResponse
     {

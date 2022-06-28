@@ -16,11 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * Контроллер для связи ролей с пользователем.
  *
  * @Route("/api/user")
+ * @SWG\Tag(name="user_role")
  */
 class UserRoleController extends AbstractController
 {
@@ -53,6 +55,13 @@ class UserRoleController extends AbstractController
      * @param User $user
      * @param string $role Id роли или Json-массив со списком id;
      * @return JsonResponse
+     *
+     * @SWG\Post(
+     *     summary="Привязать роль к пользователю.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
      */
     public function add(User $user, string $role) : JsonResponse
     {
@@ -85,6 +94,13 @@ class UserRoleController extends AbstractController
      * @param User $user
      * @param string $role Id роли или Json-массив со списком id;
      * @return JsonResponse
+     *
+     * @SWG\Delete(
+     *     summary="Отвязать роль от пользователя.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
      */
     public function delete(User $user, string $role) : JsonResponse
     {
@@ -114,6 +130,13 @@ class UserRoleController extends AbstractController
      * @Route("/{id}/role/", name="rest_api_user_role_list", methods={"GET"})
      *
      * @param User $user
+     *
+     * @SWG\Get(
+     *     summary="Список ролей, привязанных к пользователю.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function list(User $user) : JsonResponse
     {

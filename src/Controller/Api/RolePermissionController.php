@@ -16,11 +16,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * Контроллер для связи пермишнов с ролями.
  *
  * @Route("/api/role")
+ * @SWG\Tag(name="role_permission")
  */
 class RolePermissionController extends AbstractController
 {
@@ -53,6 +55,13 @@ class RolePermissionController extends AbstractController
      * @param Role $role
      * @param string $permission Id пермишна или Json-массив со списком id;
      * @return JsonResponse
+     *
+     * @SWG\Post(
+     *     summary="Привязать пермишн(ы) к роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
      */
     public function add(Role $role, string $permission) : JsonResponse
     {
@@ -85,6 +94,13 @@ class RolePermissionController extends AbstractController
      * @param Role $role
      * @param string $permission Id пермишна или Json-массив со списком id;
      * @return JsonResponse
+     *
+     * @SWG\Delete(
+     *     summary="Отвязать пермишн от роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
      */
     public function delete(Role $role, string $permission) : JsonResponse
     {
@@ -114,6 +130,13 @@ class RolePermissionController extends AbstractController
      * @Route("/{id}/permission/", name="rest_api_role_permission_list", methods={"GET"})
      *
      * @param Role $role
+     *
+     * @SWG\Get(
+     *     summary="Список пермишнов, привязанных к роли.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function list(Role $role) : JsonResponse
     {

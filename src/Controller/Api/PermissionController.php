@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * @Route("/api/permission")
+ * @SWG\Tag(name="permission")
  */
 class PermissionController extends AbstractController
 {
@@ -36,11 +38,19 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="api_permission_list", methods={"GET"})
+     * Список пермишнов.
+     *
      * @Route("/", name="rest_api_permission_list", methods={"GET"})
      *
      * @param Request $request
      * @param UserRepository $userRepository
+     *
+     * @SWG\Get(
+     *     summary="Список пермишнов.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function list(
         Request $request,
@@ -75,8 +85,14 @@ class PermissionController extends AbstractController
     /**
      * Удаление пермишна.
      *
-     * @Route("/{id}/delete", name="api_permission_delete", methods={"GET"})
      * @Route("/{id}", name="rest_api_permission_delete", methods={"DELETE"})
+     *
+     * @SWG\Delete(
+     *     summary="Удаление пермишна.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное удаление.")
+     * )
      */
     public function delete(Permission $permission) : JsonResponse
     {
@@ -87,8 +103,13 @@ class PermissionController extends AbstractController
 
     /**
      * Просмотр карточки пермишна.
-     * @Route("/{id}/view", name="api_permission_view", methods={"GET"})
      * @Route("/{id}", name="rest_api_permission_view", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Просмотр карточки пермишна.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function view(Permission $permission) : JsonResponse
     {
@@ -103,11 +124,35 @@ class PermissionController extends AbstractController
     /**
      * Добавление пермишна.
      *
-     * @Route("/add", name="api_permission_add", methods={"POST"})
      * @Route("/", name="rest_api_permission_add", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
+     *
+     * @SWG\Post(
+     *     summary="Добавление пермишна.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Машинное имя (уникальное поле, обязательно)."
+     * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Название на русском языке."
+     * )
+     * @SWG\Parameter(
+     *     name="description",
+     *     in="query",
+     *     type="string",
+     *     description="Описание."
+     * )
      */
     public function add(Request $request) : JsonResponse
     {
@@ -145,6 +190,31 @@ class PermissionController extends AbstractController
      *
      * @param Permission $permission
      * @return JsonResponse
+     *
+     * @SWG\Put(
+     *     summary="Редактирование пермишна.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Машинное имя."
+     * )
+     * @SWG\Parameter(
+     *     name="title",
+     *     in="query",
+     *     type="string",
+     *     description="Название на русском языке."
+     * )
+     * @SWG\Parameter(
+     *     name="description",
+     *     in="query",
+     *     type="string",
+     *     description="Описание."
+     * )
      */
     public function put(Permission $permission, Request $request) : JsonResponse
     {

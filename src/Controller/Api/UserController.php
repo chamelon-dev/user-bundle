@@ -2,22 +2,15 @@
 
 namespace Pantheon\UserBundle\Controller\Api;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\PersistentCollection;
-use Pantheon\UserBundle\Entity\Role;
 use Pantheon\UserBundle\Entity\User;
-use Pantheon\UserBundle\Form\Type\UserType;
 use Pantheon\UserBundle\Normalizer\PermissionNormalizer;
 use Pantheon\UserBundle\Normalizer\RoleNormalizer;
 use Pantheon\UserBundle\Normalizer\UserNormalizer;
-use Pantheon\UserBundle\Repository\RoleRepository;
 use Pantheon\UserBundle\Repository\UserRepository;
 use Pantheon\UserBundle\Service\ResultJsonService;
 use Pantheon\UserBundle\Service\UserRightsService;
 use Knp\Component\Pager\PaginatorInterface;
-use PHPUnit\Util\Json;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * @Route("/api/user")
+ * @SWG\Tag(name="user")
  */
 class UserController extends AbstractController
 {
@@ -48,8 +43,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="api_user_list", methods={"GET"})
      * @Route("/", name="rest_api_user_list", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Список пользователей.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      * @param Request $request
      * @param UserRepository $userRepository
      */
@@ -84,8 +84,13 @@ class UserController extends AbstractController
     /**
      * Удаление пользователя.
      *
-     * @Route("/{id}/delete", name="api_user_delete", methods={"GET"})
      * @Route("/{id}", name="rest_api_user_delete", methods={"DELETE"})
+     * @SWG\Delete(
+     *     summary="Удаление пользователя.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное удаление.")
+     * )
      */
     public function delete(User $user)
     {
@@ -96,8 +101,13 @@ class UserController extends AbstractController
 
     /**
      * Просмотр карточки пользователя.
-     * @Route("/{id}/view", name="api_user_view", methods={"GET"})
      * @Route("/{id}", name="rest_api_user_view", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Просмотр карточки пользователя.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешное получение."),
+     * )
      */
     public function view(User $user, UserRightsService $userRightsService) : JsonResponse
     {
@@ -118,8 +128,73 @@ class UserController extends AbstractController
     /**
      * Добавление нового пользователя.
      *
-     * @Route("/add", name="api_user_add", methods={"POST"})
      * @Route("/", name="rest_api_user_add", methods={"POST"})
+     * @SWG\Post(
+     *     summary="Добавление нового пользователя.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="username",
+     *     in="query",
+     *     type="string",
+     *     description="Логин пользователя (уникальное поле, обязательно)."
+     * )
+     * @SWG\Parameter(
+     *     name="email",
+     *     in="query",
+     *     type="string",
+     *     description="E-mail пользователя (уникальное поле, обязательно)."
+     * )
+     * @SWG\Parameter(
+     *     name="password",
+     *     in="query",
+     *     type="string",
+     *     description="Пароль пользователя в не закодированном виде (обязательно)."
+     * )
+     * @SWG\Parameter(
+     *     name="lastname",
+     *     in="query",
+     *     type="string",
+     *     description="Фамилия."
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Имя."
+     * )
+     * @SWG\Parameter(
+     *     name="patronymic",
+     *     in="query",
+     *     type="string",
+     *     description="Отчество."
+     * )
+     * @SWG\Parameter(
+     *     name="birthdate",
+     *     in="query",
+     *     type="string",
+     *     description="Дата рождения в формате ДДДД-ММ-ГГ."
+     * )
+     * @SWG\Parameter(
+     *     name="workplace",
+     *     in="query",
+     *     type="string",
+     *     description="Место работы."
+     * )
+     * @SWG\Parameter(
+     *     name="duty",
+     *     in="query",
+     *     type="string",
+     *     description="Должность."
+     * )
+     * @SWG\Parameter(
+     *     name="phone",
+     *     in="query",
+     *     type="string",
+     *     description="Номер телефона."
+     * )
      */
     public function add(Request $request, UserPasswordEncoderInterface $encoder) : JsonResponse
     {
@@ -183,7 +258,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
     /**
      * Редактирование пользователя.
      *
@@ -192,6 +266,55 @@ class UserController extends AbstractController
      * @param User $user
      * @param Request $request
      * @return JsonResponse
+     *
+     * @SWG\Put(
+     *     summary="Редактирование пользователя.",
+     *     consumes={"application/json"},
+     *     produces={"application/json"},
+     *     @SWG\Response(response="200", description="Успешно."),
+     * )
+     * @SWG\Parameter(
+     *     name="birthdate",
+     *     in="query",
+     *     type="string",
+     *     description="Дата рождения в формате ДДДД-ММ-ГГ."
+     * )
+     * @SWG\Parameter(
+     *     name="lastname",
+     *     in="query",
+     *     type="string",
+     *     description="Фамилия."
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="query",
+     *     type="string",
+     *     description="Имя."
+     * )
+     * @SWG\Parameter(
+     *     name="patronymic",
+     *     in="query",
+     *     type="string",
+     *     description="Отчество."
+     * )
+     * @SWG\Parameter(
+     *     name="workplace",
+     *     in="query",
+     *     type="string",
+     *     description="Место работы."
+     * )
+     * @SWG\Parameter(
+     *     name="duty",
+     *     in="query",
+     *     type="string",
+     *     description="Должность."
+     * )
+     * @SWG\Parameter(
+     *     name="phone",
+     *     in="query",
+     *     type="string",
+     *     description="Номер телефона."
+     * )
      */
     public function put(User $user, Request $request) : JsonResponse
     {
