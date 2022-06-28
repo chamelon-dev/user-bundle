@@ -5,7 +5,7 @@
   - Редактирование данных пользователя
   - Удаление пользователя
   - Получение списка пользователей
-  - Удаление пользвоа
+  - Удаление пользователя
 - Работа с пользовательскими ролями
   - Получение ролей пользователя
   - Добавление новой роли пользователю
@@ -21,12 +21,11 @@
   - Привязка нового пермишна к роли
   - Отвязка пермишна от роли
 - Работа с пермишнами
-  - Создание пермишна
   - Редактирование пермишна
   - Удаление пермишна
   - Получение информации о пермишне
   - Получение списка всех существующих пермишнов
-
+- Аутентификация
 
 Работа с пользователями
 -----------------------
@@ -496,4 +495,39 @@ DELETE /api/role/b8a51948-ff27-4cb6-bd7c-6ef5955f4cbf/permission/[5d75b01f-fbc5-
   },
   ...
 ]
+```
+
+Аутентификация
+--------------
+
+#### Логин и получение токена:
+
+*POST /api/login_check/*
+
+header:Content-Type: application/json
+
+json:
+```json
+{
+	"username": {username},
+	"password": {password}
+}
+
+```
+
+**Пример ответа (возвращается JWT):**
+
+```json
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTY0MTM5MzAsImV4cCI6MTY1NjQxNzUzMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYnNhIn0.xf_1fRP6N5ULXNy68tlGWRAzvrnMqlZnn8w-owi3Alvx7lYIb69Zuw_GE7t1fq0kiizd1dZxTzvkMZAzCd43b6a_-irdXjz7CIHBdzg-3CYR9ciePZJX0b2XlJwfX1ZTqP40qGEbFvl6TXDJ_U4UhZr1iuWnN-8jWqtjG1CxcRPKr71gfdvV9J5Ky9DtqgdppNNyzvQpxIpOny7aXT4kutofD7s1u_pNPfYav4hto0Z6CWLYmxslm5qJGKiJe0lfeDiGCIMUX2UNJJ7kEfdVSqbEv4durx-APkVG_ZQDfA8yWUCJWDsMGKrrGSNrDPRbM67iw6a5-ETZ2OPelEnhlA"
+}
+```
+
+**Пример ошибки:**
+
+```json
+{
+  "code": 401,
+  "message": "Недействительные аутентификационные данные."
+}
 ```

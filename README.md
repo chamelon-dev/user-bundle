@@ -28,6 +28,9 @@ composer require chamelon-dev/user-bundle
 ```yaml
 logout:
   path: /logout
+
+api_login_check:
+  path: /api/login_check
 ```
 
 ##### config/packages/doctrine.yaml
@@ -64,6 +67,19 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+          pattern: ^/api/login
+          stateless: true
+          json_login:
+            check_path: /api/login_check
+            success_handler: lexik_jwt_authentication.handler.authentication_success
+            failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+          pattern:   ^/api
+          stateless: true
+          guard:
+            authenticators:
+              - lexik_jwt_authentication.jwt_token_authenticator            
         main:
             access_denied_handler: user_bundle.handler.access_denied
             anonymous: lazy
@@ -78,8 +94,9 @@ security:
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER]
     access_control:
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api$,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/logout/redirect$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile, roles: ROLE_USER }
@@ -104,6 +121,28 @@ framework:
         gc_maxlifetime: 432000
 ```
 
+Настройка JWT-аутентификации:
+
+##### .env
+```yaml
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=
+```
+
+##### .gitignore
+```text
+/config/jwt/*.pem
+```
+
+##### config/packages/lexik_jwt_authentication.yaml
+```yaml
+lexik_jwt_authentication:
+  secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+  public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+  pass_phrase: '%env(JWT_PASSPHRASE)%'
+  token_ttl: 3600
+```
 
 Создание миграции:
 ```bash
@@ -130,4 +169,14 @@ php bin/console app:load-user-fixtures
 Сохранение пермишнов на основе аннотаций контроллеров:
  ```bash
 php bin/console app:update-permissions
+ ```
+
+Генерация ключей для JWT-аутентификации:
+ ```bash
+php bin/console lexik:jwt:generate-keypair
+ ```
+
+Проверка получения токена:
+ ```bash
+curl -X POST -H "Content-Type: application/json" https://localhost/api/login_check -d '{"username":"superadmin","password":"P@ssw0rd"}'
  ```
