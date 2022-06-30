@@ -16,13 +16,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * Контроллер для связи пермишнов с ролями.
  *
  * @Route("/api/role")
- * @SWG\Tag(name="role_permission")
+ * @OA\Tag(
+ *     name="role_permission",
+ *     description="Связь пермишнов с ролями",
+ * )
  */
 class RolePermissionController extends AbstractController
 {
@@ -53,14 +56,36 @@ class RolePermissionController extends AbstractController
      * @Route("/{id}/permission/{permission}/", name="rest_api_role_permission_add", methods={"POST"})
      *
      * @param Role $role
-     * @param string $permission Id пермишна или Json-массив со списком id;
+     * @param string $permission Id пермишна или Json-массив со списком id.
      * @return JsonResponse
      *
-     * @SWG\Post(
+     * @OA\Post(
+     *     path="/api/role/{id}/permission/{permission}/",
      *     summary="Привязать пермишн(ы) к роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"role_permission"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id роли."
+     *     ),
+     *     @OA\Parameter(
+     *         name="permission",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id пермишна или Json-массив со списком id."
+     *     ),
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok"},
+     *              summary="Успешное выполнение",
+     *         ),
+     *     )
      * )
      */
     public function add(Role $role, string $permission) : JsonResponse
@@ -89,17 +114,39 @@ class RolePermissionController extends AbstractController
      * Отвязать пермишн от роли.
      * Можно в пакетном режиме.
      *
-     * @Route("/{id}/permission/{permission}/", name="rest_api_role_permission_delete", methods={"DELETE"})
+     * @Route("/api/role/{id}/permission/{permission}/", name="rest_api_role_permission_delete", methods={"DELETE"})
      *
      * @param Role $role
-     * @param string $permission Id пермишна или Json-массив со списком id;
+     * @param string $permission Id пермишна или Json-массив со списком id.
      * @return JsonResponse
      *
-     * @SWG\Delete(
+     * @OA\Delete(
+     *     path="/{id}/permission/{permission}/",
      *     summary="Отвязать пермишн от роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"role_permission"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id роли."
+     *     ),
+     *     @OA\Parameter(
+     *         name="permission",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id пермишна или Json-массив со списком id."
+     *     ),
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok"},
+     *              summary="Успешное выполнение",
+     *         ),
+     *     )
      * )
      */
     public function delete(Role $role, string $permission) : JsonResponse
@@ -131,12 +178,12 @@ class RolePermissionController extends AbstractController
      *
      * @param Role $role
      *
-     * @SWG\Get(
+     * @OA\Get(
+     *     path="/api/role/{id}/permission/",
      *     summary="Список пермишнов, привязанных к роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"role_permission"},
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function list(Role $role) : JsonResponse
     {

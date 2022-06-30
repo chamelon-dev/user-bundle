@@ -15,11 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/permission")
- * @SWG\Tag(name="permission")
+ * @OA\Tag(
+ *     name="permission",
+ *     description="Пермишны",
+ * )
  */
 class PermissionController extends AbstractController
 {
@@ -45,12 +48,13 @@ class PermissionController extends AbstractController
      * @param Request $request
      * @param UserRepository $userRepository
      *
-     * @SWG\Get(
+     * @OA\Get(
+     *     path="/api/permissons",
      *     summary="Список пермишнов.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"permission"},
      * )
+     * @OA\Response(response=200, description="OK")
+     *
      */
     public function list(
         Request $request,
@@ -87,11 +91,24 @@ class PermissionController extends AbstractController
      *
      * @Route("/{id}", name="rest_api_permission_delete", methods={"DELETE"})
      *
-     * @SWG\Delete(
+     * @OA\Delete(
+     *     path="/api/permission/{id}",
      *     summary="Удаление пермишна.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное удаление.")
+     *     tags={"permission"},
+     *     @OA\Parameter(
+     *         description="Id пермишна.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="result", value={"result": "ok"}, summary="Успешное удаление"),
+     *     )
      * )
      */
     public function delete(Permission $permission) : JsonResponse
@@ -103,13 +120,22 @@ class PermissionController extends AbstractController
 
     /**
      * Просмотр карточки пермишна.
+     *
      * @Route("/{id}", name="rest_api_permission_view", methods={"GET"})
-     * @SWG\Get(
+     *
+     * @OA\Get(
+     *     path="/api/permission/{id}",
      *     summary="Просмотр карточки пермишна.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"permission"},
+     *     @OA\Parameter(
+     *         description="Id пермишна.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function view(Permission $permission) : JsonResponse
     {
@@ -124,35 +150,10 @@ class PermissionController extends AbstractController
     /**
      * Добавление пермишна.
      *
+     * Устарело и не используется.
+     * Для генерации пермишнов на основе аннотаций используется команда app:update-permissions.
+     *
      * @Route("/", name="rest_api_permission_add", methods={"POST"})
-     *
-     * @param Request $request
-     * @return JsonResponse
-     *
-     * @SWG\Post(
-     *     summary="Добавление пермишна.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
-     * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Машинное имя (уникальное поле, обязательно)."
-     * )
-     * @SWG\Parameter(
-     *     name="title",
-     *     in="query",
-     *     type="string",
-     *     description="Название на русском языке."
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Описание."
-     * )
      */
     public function add(Request $request) : JsonResponse
     {
@@ -191,29 +192,35 @@ class PermissionController extends AbstractController
      * @param Permission $permission
      * @return JsonResponse
      *
-     * @SWG\Put(
+     * @OA\Put(
+     *     path="/api/permission/{id}",
      *     summary="Редактирование пермишна.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"permission"},
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Машинное имя (уникальное поле)."
+     *     ),
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Название на русском языке."
+     *     ),
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Описание."
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Машинное имя."
-     * )
-     * @SWG\Parameter(
-     *     name="title",
-     *     in="query",
-     *     type="string",
-     *     description="Название на русском языке."
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Описание."
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="ok", value={"result": "ok"}, summary="Успешно."),
+     *     )
      * )
      */
     public function put(Permission $permission, Request $request) : JsonResponse

@@ -19,11 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/user")
- * @SWG\Tag(name="user")
+ * @OA\Tag(
+ *     name="user",
+ *     description="Пользователи",
+ * )
  */
 class UserController extends AbstractController
 {
@@ -43,15 +46,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * Список пользователей.
+     *
      * @Route("/", name="rest_api_user_list", methods={"GET"})
-     * @SWG\Get(
-     *     summary="Список пользователей.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
-     * )
+     *
      * @param Request $request
      * @param UserRepository $userRepository
+     *
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="Список пользователей.",
+     *     tags={"user"},
+     * )
+     * @OA\Response(response=200, description="OK")
      */
     public function list(
         Request $request,
@@ -85,11 +92,25 @@ class UserController extends AbstractController
      * Удаление пользователя.
      *
      * @Route("/{id}", name="rest_api_user_delete", methods={"DELETE"})
-     * @SWG\Delete(
+     *
+     * @OA\Delete(
+     *     path="/api/user/{id}",
      *     summary="Удаление пользователя.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное удаление.")
+     *     tags={"user"},
+     *     @OA\Parameter(
+     *         description="Id пользователя.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="result", value={"result": "ok"}, summary="Успешное удаление"),
+     *     )
      * )
      */
     public function delete(User $user)
@@ -101,13 +122,22 @@ class UserController extends AbstractController
 
     /**
      * Просмотр карточки пользователя.
+     *
      * @Route("/{id}", name="rest_api_user_view", methods={"GET"})
-     * @SWG\Get(
+     *
+     * @OA\Get(
+     *     path="/api/user/{id}",
      *     summary="Просмотр карточки пользователя.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"user"},
+     *     @OA\Parameter(
+     *         description="Id пользователя.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function view(User $user, UserRightsService $userRightsService) : JsonResponse
     {
@@ -128,72 +158,90 @@ class UserController extends AbstractController
     /**
      * Добавление нового пользователя.
      *
+     * TODO:
+     *
      * @Route("/", name="rest_api_user_add", methods={"POST"})
-     * @SWG\Post(
+     *
+     * @OA\Post(
+     *     path="/api/user",
      *     summary="Добавление нового пользователя.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"user"},
+     *     @OA\Parameter(
+     *         name="username",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Логин пользователя (уникальное поле)."
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="E-mail пользователя (уникальное поле)."
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Пароль пользователя в не закодированном виде."
+     *     ),
+     *     @OA\Parameter(
+     *         name="lastname",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Фамилия."
+     *     ),
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Имя."
+     *     ),
+     *     @OA\Parameter(
+     *         name="patronymic",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Отчество."
+     *     ),
+     *     @OA\Parameter(
+     *         name="birthdate",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Дата рождения в формате ДДДД-ММ-ГГ."
+     *     ),
+     *     @OA\Parameter(
+     *         name="workplace",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Место работы."
+     *     ),
+     *     @OA\Parameter(
+     *         name="duty",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Должность."
+     *     ),
+     *     @OA\Parameter(
+     *         name="phone",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Номер телефона."
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="username",
-     *     in="query",
-     *     type="string",
-     *     description="Логин пользователя (уникальное поле, обязательно)."
-     * )
-     * @SWG\Parameter(
-     *     name="email",
-     *     in="query",
-     *     type="string",
-     *     description="E-mail пользователя (уникальное поле, обязательно)."
-     * )
-     * @SWG\Parameter(
-     *     name="password",
-     *     in="query",
-     *     type="string",
-     *     description="Пароль пользователя в не закодированном виде (обязательно)."
-     * )
-     * @SWG\Parameter(
-     *     name="lastname",
-     *     in="query",
-     *     type="string",
-     *     description="Фамилия."
-     * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Имя."
-     * )
-     * @SWG\Parameter(
-     *     name="patronymic",
-     *     in="query",
-     *     type="string",
-     *     description="Отчество."
-     * )
-     * @SWG\Parameter(
-     *     name="birthdate",
-     *     in="query",
-     *     type="string",
-     *     description="Дата рождения в формате ДДДД-ММ-ГГ."
-     * )
-     * @SWG\Parameter(
-     *     name="workplace",
-     *     in="query",
-     *     type="string",
-     *     description="Место работы."
-     * )
-     * @SWG\Parameter(
-     *     name="duty",
-     *     in="query",
-     *     type="string",
-     *     description="Должность."
-     * )
-     * @SWG\Parameter(
-     *     name="phone",
-     *     in="query",
-     *     type="string",
-     *     description="Номер телефона."
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok", "id": "b24cbf72-e458-4c5d-a64e-02355814f6df"},
+     *              summary="Успешное создание",
+     *         ),
+     *         @OA\Examples(
+     *              example="error",
+     *              value={"result": "error", "message": "Required fields: 'username', 'email', 'password'"},
+     *              summary="Ошибка",
+     *          ),
+     *     )
      * )
      */
     public function add(Request $request, UserPasswordEncoderInterface $encoder) : JsonResponse
@@ -267,53 +315,66 @@ class UserController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      *
-     * @SWG\Put(
+     * @OA\Put(
+     *     path="/api/user/{id}",
      *     summary="Редактирование пользователя.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"user"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Id пользователя."
+     *     ),
+     *     @OA\Parameter(
+     *         name="lastname",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Фамилия."
+     *     ),
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Имя."
+     *     ),
+     *     @OA\Parameter(
+     *         name="patronymic",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Отчество."
+     *     ),
+     *     @OA\Parameter(
+     *         name="birthdate",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Дата рождения в формате ДДДД-ММ-ГГ."
+     *     ),
+     *     @OA\Parameter(
+     *         name="workplace",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Место работы."
+     *     ),
+     *     @OA\Parameter(
+     *         name="duty",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Должность."
+     *     ),
+     *     @OA\Parameter(
+     *         name="phone",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Номер телефона."
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="birthdate",
-     *     in="query",
-     *     type="string",
-     *     description="Дата рождения в формате ДДДД-ММ-ГГ."
-     * )
-     * @SWG\Parameter(
-     *     name="lastname",
-     *     in="query",
-     *     type="string",
-     *     description="Фамилия."
-     * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Имя."
-     * )
-     * @SWG\Parameter(
-     *     name="patronymic",
-     *     in="query",
-     *     type="string",
-     *     description="Отчество."
-     * )
-     * @SWG\Parameter(
-     *     name="workplace",
-     *     in="query",
-     *     type="string",
-     *     description="Место работы."
-     * )
-     * @SWG\Parameter(
-     *     name="duty",
-     *     in="query",
-     *     type="string",
-     *     description="Должность."
-     * )
-     * @SWG\Parameter(
-     *     name="phone",
-     *     in="query",
-     *     type="string",
-     *     description="Номер телефона."
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="ok", value={"result": "ok"}, summary="Успешно."),
+     *     )
      * )
      */
     public function put(User $user, Request $request) : JsonResponse

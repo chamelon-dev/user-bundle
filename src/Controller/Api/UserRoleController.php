@@ -16,13 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * Контроллер для связи ролей с пользователем.
  *
  * @Route("/api/user")
- * @SWG\Tag(name="user_role")
+ * @OA\Tag(
+ *     name="user_role",
+ *     description="Связь ролей с пользователями",
+ * )
  */
 class UserRoleController extends AbstractController
 {
@@ -53,14 +56,36 @@ class UserRoleController extends AbstractController
      * @Route("/{id}/role/{role}/", name="rest_api_user_role_add", methods={"POST"})
      *
      * @param User $user
-     * @param string $role Id роли или Json-массив со списком id;
+     * @param string $role Id роли или Json-массив со списком id.
      * @return JsonResponse
      *
-     * @SWG\Post(
+     * @OA\Post(
+     *     path="/api/user/{id}/role/{role}/",
      *     summary="Привязать роль к пользователю.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"user_role"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id пользователя."
+     *     ),
+     *     @OA\Parameter(
+     *         name="role",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description=" Id роли или Json-массив со списком id."
+     *     ),
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok"},
+     *              summary="Успешное выполнение",
+     *         ),
+     *     )
      * )
      */
     public function add(User $user, string $role) : JsonResponse
@@ -92,14 +117,36 @@ class UserRoleController extends AbstractController
      * @Route("/{id}/role/{role}/", name="rest_api_user_role_delete", methods={"DELETE"})
      *
      * @param User $user
-     * @param string $role Id роли или Json-массив со списком id;
+     * @param string $role Id роли или Json-массив со списком id.
      * @return JsonResponse
-     *
-     * @SWG\Delete(
+
+     * @OA\Delete(
+     *     path="/api/user/{id}/role/{role}/",
      *     summary="Отвязать роль от пользователя.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"user_role"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id пользователя."
+     *     ),
+     *     @OA\Parameter(
+     *         name="role",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         description="Id роли или Json-массив со списком id."
+     *     ),
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok"},
+     *              summary="Успешное выполнение",
+     *         ),
+     *     )
      * )
      */
     public function delete(User $user, string $role) : JsonResponse
@@ -128,15 +175,15 @@ class UserRoleController extends AbstractController
      * Список ролей, привязанных к пользователю.
      *
      * @Route("/{id}/role/", name="rest_api_user_role_list", methods={"GET"})
-     *
+
      * @param User $user
      *
-     * @SWG\Get(
+     * @OA\Get(
+     *     path="/api/user/{id}/role/",
      *     summary="Список ролей, привязанных к пользователю.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"user_role"},
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function list(User $user) : JsonResponse
     {

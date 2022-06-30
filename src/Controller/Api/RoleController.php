@@ -14,11 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * @Route("/api/role")
- * @SWG\Tag(name="role")
+ * @OA\Tag(
+ *     name="role",
+ *     description="Роли",
+ * )
  */
 class RoleController extends AbstractController
 {
@@ -38,12 +41,13 @@ class RoleController extends AbstractController
     /**
      * Список ролей.
      * @Route("/", name="rest_api_role_list", methods={"GET"})
-     * @SWG\Get(
+     *
+     * @OA\Get(
+     *     path="/api/role",
      *     summary="Список ролей.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"role"},
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function list(
         Request $request,
@@ -77,11 +81,25 @@ class RoleController extends AbstractController
      * Удаление роли.
      *
      * @Route("/{id}", name="rest_api_role_delete", methods={"DELETE"})
-     * @SWG\Delete(
+     *
+     * @OA\Delete(
+     *     path="/api/role/{id}",
      *     summary="Удаление роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное удаление.")
+     *     tags={"role"},
+     *     @OA\Parameter(
+     *         description="Id роли.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="result", value={"result": "ok"}, summary="Успешное удаление"),
+     *     )
      * )
      */
     public function delete(Role $role)
@@ -93,13 +111,22 @@ class RoleController extends AbstractController
 
     /**
      * Просмотр карточки роли.
+     *
      * @Route("/{id}", name="rest_api_role_view", methods={"GET"})
-     * @SWG\Get(
+     *
+     * @OA\Get(
+     *     path="/api/role/{id}",
      *     summary="Просмотр карточки роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешное получение."),
+     *     tags={"role"},
+     *     @OA\Parameter(
+     *         description="Id роли.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     )
      * )
+     * @OA\Response(response=200, description="OK")
      */
     public function view(Role $role) : JsonResponse
     {
@@ -119,29 +146,44 @@ class RoleController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      *
-     * @SWG\Post(
+     * @OA\Post(
+     *     path="/api/role",
      *     summary="Добавление новой роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"role"},
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Машинное имя (уникальное поле)."
+     *     ),
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Название на русском языке."
+     *     ),
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Описание."
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Машинное имя (уникальное поле, обязательно)."
-     * )
-     * @SWG\Parameter(
-     *     name="title",
-     *     in="query",
-     *     type="string",
-     *     description="Название на русском языке."
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Описание."
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(
+     *              example="ok",
+     *              value={"result": "ok", "id": "b24cbf72-e458-4c5d-a64e-02355814f6df"},
+     *              summary="Успешное создание",
+     *         ),
+     *         @OA\Examples(
+     *              example="error",
+     *              value={"result": "error", "message": "Role with name 'ROLE_USER' already exists"},
+     *              summary="Ошибка",
+     *          ),
+     *     )
      * )
      */
     public function add(Request $request) : JsonResponse
@@ -181,29 +223,35 @@ class RoleController extends AbstractController
      * @param Role $role
      * @return JsonResponse
      *
-     * @SWG\Put(
+     * @OA\Put(
+     *     path="/api/role/{id}",
      *     summary="Редактирование роли.",
-     *     consumes={"application/json"},
-     *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="Успешно."),
+     *     tags={"role"},
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Машинное имя (уникальное поле)."
+     *     ),
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Название на русском языке."
+     *     ),
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         @OA\Schema(type="string"),
+     *         description="Описание."
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="name",
-     *     in="query",
-     *     type="string",
-     *     description="Машинное имя."
-     * )
-     * @SWG\Parameter(
-     *     name="title",
-     *     in="query",
-     *     type="string",
-     *     description="Название на русском языке."
-     * )
-     * @SWG\Parameter(
-     *     name="description",
-     *     in="query",
-     *     type="string",
-     *     description="Описание."
+     * @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\JsonContent(
+     *         @OA\Examples(example="ok", value={"result": "ok"}, summary="Успешно."),
+     *     )
      * )
      */
     public function put(Role $role, Request $request) : JsonResponse
