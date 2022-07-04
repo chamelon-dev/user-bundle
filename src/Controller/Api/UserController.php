@@ -11,6 +11,7 @@ use Pantheon\UserBundle\Repository\UserRepository;
 use Pantheon\UserBundle\Service\ResultJsonService;
 use Pantheon\UserBundle\Service\UserRightsService;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,13 +37,15 @@ class UserController extends AbstractController
         EntityManagerInterface $em,
         UserPasswordEncoderInterface $encoder,
         ResultJsonService $resultJsonService,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LoggerInterface $appLogger
     )
     {
         $this->em = $em;
         $this->userPasswordEncoder = $encoder;
         $this->resultJsonService = $resultJsonService;
         $this->userRepository = $userRepository;
+        $this->logger = $appLogger;
     }
 
     /**
@@ -247,12 +250,15 @@ class UserController extends AbstractController
     public function add(Request $request, UserPasswordEncoderInterface $encoder) : JsonResponse
     {
         $post = $request->query;
+        $this->logger->info('API USER CREATE', ['POST RECEIVED' => $post->all()]);
         $username = $post->get('username');
         $email = $post->get('email');
         $password = $post->get('password');
         if (!$username or !$email or !$password) {
             $message = "Required fields: 'username', 'email', 'password'";
-            return new JsonResponse($this->resultJsonService->error($message));
+            $errorArray = $this->resultJsonService->error($message);
+            $this->logger->error('API USER CREATE', ['error' => $errorArray]);
+            return new JsonResponse($errorArray);
         }
         $birthdate = null;
         if ($birthday = $post->get('birthdate')) {
@@ -260,16 +266,22 @@ class UserController extends AbstractController
                 $birthdate = new \DateTime($birthday);
             } catch (\Exception $e) {
                 $message = "Can not parse date '" . $birthday . "'";
-                return new JsonResponse($this->resultJsonService->error($message));
+                $errorArray = $this->resultJsonService->error($message);
+                $this->logger->error('API USER CREATE', ['error' => $errorArray]);
+                return new JsonResponse($errorArray);
             }
         }
         if ($this->userRepository->findBy(['username' => $username])) {
             $message = "User with username '" . $username . "' already exists.";
-            return new JsonResponse($this->resultJsonService->error($message));
+            $errorArray = $this->resultJsonService->error($message);
+            $this->logger->error('API USER CREATE', ['error' => $errorArray]);
+            return new JsonResponse($errorArray);
         }
         if ($this->userRepository->findBy(['email' => $email])) {
             $message = "User with email '" . $email . "' already exists.";
-            return new JsonResponse($this->resultJsonService->error($message));
+            $errorArray = $this->resultJsonService->error($message);
+            $this->logger->error('API USER CREATE', ['error' => $errorArray]);
+            return new JsonResponse($errorArray);
         }
         $user = (new User)
             ->setUsername($username)
@@ -300,10 +312,12 @@ class UserController extends AbstractController
         $user->setPassword($encoded);
         $this->em->persist($user);
         $this->em->flush();
-        return new JsonResponse([
+        $okArray = [
             'result' => 'ok',
             'id' => $user->getId(),
-        ]);
+        ];
+        $this->logger->info('API USER CREATE', ['ok' => $okArray]);
+        return new JsonResponse($okArray);
     }
 
     /**
