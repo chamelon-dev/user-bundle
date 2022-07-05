@@ -164,6 +164,7 @@ class UserController extends AbstractController
      * TODO:
      *
      * @Route("/", name="rest_api_user_add", methods={"POST"})
+     * @Route("", methods={"POST"})
      *
      * @OA\Post(
      *     path="/api/user",
