@@ -157,7 +157,7 @@ class PermissionController extends AbstractController
      */
     public function add(Request $request) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $name = $post->get('name');
         if (!$name) {
             $message = "Required field: 'name'";
@@ -225,7 +225,7 @@ class PermissionController extends AbstractController
      */
     public function put(Permission $permission, Request $request) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $name = $post->get('name');
         if (!is_null($name)) {
             $permission->setName($name ?: null);

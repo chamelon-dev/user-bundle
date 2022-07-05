@@ -250,7 +250,7 @@ class UserController extends AbstractController
      */
     public function add(Request $request, UserPasswordEncoderInterface $encoder) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $this->logger->info('API USER CREATE', ['POST RECEIVED' => $post->all()]);
         $username = $post->get('username');
         $email = $post->get('email');
@@ -394,7 +394,7 @@ class UserController extends AbstractController
      */
     public function put(User $user, Request $request) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $name = $post->get('name');
         if (!is_null($name)) {
             $user->setName($name ?: null);

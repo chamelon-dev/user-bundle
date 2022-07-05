@@ -188,7 +188,7 @@ class RoleController extends AbstractController
      */
     public function add(Request $request) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $name = $post->get('name');
         if (!$name) {
             $message = "Required field: 'name'";
@@ -256,7 +256,7 @@ class RoleController extends AbstractController
      */
     public function put(Role $role, Request $request) : JsonResponse
     {
-        $post = $request->query;
+        $post = $request->request;
         $name = $post->get('name');
         if (!is_null($name)) {
             $role->setName($name ?: null);
