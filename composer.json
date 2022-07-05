@@ -9,6 +9,7 @@
         "knplabs/knp-paginator-bundle": "^5.2",
         "lexik/jwt-authentication-bundle": "^2.16",
         "nelmio/api-doc-bundle": "^4.9",
+        "nelmio/cors-bundle": "^2.2",
         "ramsey/uuid-doctrine": "^1.8",
         "symfony/config": "^4.3",
         "symfony/dependency-injection": "^4.3",
