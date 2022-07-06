@@ -110,9 +110,6 @@ class Role
         return $this;
     }
 
-    /////////////////////////////////////////////////
-    // работа с датой и временем создания/обновления
-
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var DateTime

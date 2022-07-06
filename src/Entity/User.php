@@ -8,8 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * TODO: здесь нет имени, фамилии и данных профиля - упрощенный вариант
- *
  * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="Pantheon\UserBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -74,10 +72,6 @@ class User implements UserInterface
      */
     private $role;
 
-
-
-    // переменные профиля
-
     /**
      * Имя пользователя.
      * @var string
@@ -130,17 +124,11 @@ class User implements UserInterface
     {
         return $this->getFio() ? : $this->getUsername();
     }
-    ///
-    /// геттеры и сеттеры
-    ///
 
     public function getId()
     {
         return $this->id;
     }
-
-    /////////////////////////////////////////////////
-    // обязательные геттеры из интерфейса
 
     public function getUsername(): string
     {
@@ -151,7 +139,6 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        // TODO: проверить, уместно ли здесь это
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
@@ -194,11 +181,7 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-        // TODO: нужен ли нам plainPassword?
     }
-
-    //////////////////////////////////////
-    // не интерфейсные геттеры/сеттеры
 
     public function setUsername(string $username): self
     {
@@ -217,7 +200,6 @@ class User implements UserInterface
         return $this;
     }
 
-    // уместно ли это в сущности?
     public function hasRole(string $role) : bool
     {
         return in_array($role, $this->getRoles(), true);
@@ -255,9 +237,6 @@ class User implements UserInterface
         $this->lastLogin = $lastLogin;
         return $this;
     }
-
-    /////////////////////////////////////////////////
-    // работа с датой и временем создания/обновления
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -311,9 +290,6 @@ class User implements UserInterface
     {
         return $this->updatedAt;
     }
-
-    ////////////////////////////////////////////
-    /// геттеры и сеттеры для профиля
 
     public function getName(): ?string
     {

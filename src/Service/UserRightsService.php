@@ -8,8 +8,6 @@ use Pantheon\UserBundle\Entity\User;
 
 /**
  * Класс, который возвращает роли и пермишны пользователя.
- * TODO: класс довольно общий, возможно, надо разделить получение ролей и пермишнов.
- * TODO: можно сделать кэш для уменьшения числа запросов к БД
  */
 class UserRightsService
 {
@@ -25,8 +23,6 @@ class UserRightsService
      */
     public function getRoles(User $user) : array
     {
-        // TODO: не давать ли всем ROLE_USER
-        // TODO: пожалуй, пока не будем
         return $user->getRole()->getValues();
     }
 
