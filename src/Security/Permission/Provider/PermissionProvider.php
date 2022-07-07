@@ -59,6 +59,4 @@ abstract class PermissionProvider implements PermissionProviderInterface
     {
         return $this->logger;
     }
-
-
 }

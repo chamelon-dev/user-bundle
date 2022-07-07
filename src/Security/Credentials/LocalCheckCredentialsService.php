@@ -14,7 +14,6 @@ class LocalCheckCredentialsService extends CheckCredentialsService
     protected $userProvider;
 
     /**
-     * LocalCheckCredentialsService constructor.
      * @param array $config
      * @param CacheInterface $cache
      * @param LoggerInterface $logger

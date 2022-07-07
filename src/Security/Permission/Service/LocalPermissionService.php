@@ -12,7 +12,6 @@ use Symfony\Contracts\Cache\CacheInterface;
 class LocalPermissionService extends PermissionService
 {
     /**
-     * LocalPermissionService constructor.
      * @param PermissionProviderInterface $permissionProvider
      * @param CheckCredentialsServiceInterface $checkCredentialsService
      * @param CacheInterface $cache
@@ -26,7 +25,6 @@ class LocalPermissionService extends PermissionService
     ) {
         parent::__construct($permissionProvider, $checkCredentialsService, $cache, $logger);
     }
-
 
     /**
      * @param UserInterface $user

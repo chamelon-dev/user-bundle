@@ -64,15 +64,6 @@ class RoleController extends AbstractController
     }
 
     /**
-     * @Route("/add/", name="role_add")
-     */
-    public function add()
-    {
-
-
-    }
-
-    /**
      * Редактирование роли.
      * @Route("/{id}/edit/", name="role_edit")
      * @Template("@User/role/edit.html.twig")

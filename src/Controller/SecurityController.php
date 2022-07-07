@@ -48,7 +48,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-
         return new RedirectResponse('/');
     }
 

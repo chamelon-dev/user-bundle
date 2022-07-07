@@ -23,5 +23,4 @@ interface PermissionProviderInterface
      * @return LoggerInterface
      */
     public function getLogger(): LoggerInterface;
-
 }

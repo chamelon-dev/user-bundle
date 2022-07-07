@@ -84,10 +84,6 @@
                                             <i class="icon icon-pencil"></i>
                                         </a>
 
-{#                                        <a class="td-link" href="{{ path('user_delete', { 'id': user.id, 'fromUrl': currentPath }) }}">#}
-{#                                            <i class="icon icon-trash"></i>#}
-{#                                        </a>#}
-
                                         <a class="td-link"
                                            href="#"
                                            data-toggle="modal"
@@ -103,35 +99,6 @@
                                             <i class="icon icon-trash"></i>
                                         </a>
 
-
-
-{#                                        {% if is_granted('CHS chs view') %}#}
-{#                                            <a class="td-link" href="{{ path('chs_view', { 'id': chs.id, 'fromUrl': currentPath }) }}">#}
-{#                                                <i class="icon icon-eye"></i>#}
-{#                                            </a>#}
-{#                                        {% endif %}#}
-{#                                        {% if is_granted('CHS chs edit') %}#}
-{#                                            <a class="td-link" href="{{ path('chs_edit', { 'id': chs.id, 'fromUrl': currentPath }) }}">#}
-{#                                                <i class="icon icon-pencil"></i>#}
-{#                                            </a>#}
-{#                                        {% endif %}#}
-{#                                        {% if is_granted('CHS chs delete') %}#}
-{#                                            <a class="td-link"#}
-{#                                               data-toggle="modal"#}
-{#                                               data-target="#confirm-action"#}
-{#                                               data-href="{{ path('chs_delete', {#}
-{#                                                   'id': chs.id,#}
-{#                                                   'fromUrl': currentPath#}
-{#                                               }) }}"#}
-{#                                               data-body="Вы уверены, что хотите удалить ЧС<br>&laquo;{{ chs.name|raw }}&raquo;?"#}
-{#                                               data-ok="{% trans %}Delete{% endtrans %}"#}
-{#                                               data-okclass="button-danger"#}
-{#                                            >#}
-{#                                                <i class="icon icon-trash"></i>#}
-{#                                            </a>#}
-{#                                        {% endif %}#}
-
-
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -140,19 +107,6 @@
                     </div>
                 {% else %}
                     {% trans %}The list is empty.{% endtrans %}
-{#                    {% if not canSeeSomething %}#}
-{#                        <div class="alert alert-danger" role="alert" style="width:50%;">#}
-{#                            {% trans %}User has no region.{% endtrans %}#}
-{#                        </div>#}
-{#                    {% else %}#}
-{#                        <p class="mb-0 mt-3">#}
-{#                            {% if ((filtersIsEmpty is not defined) or (filtersIsEmpty == true)) %}#}
-{#                                {% trans %}The list is empty.{% endtrans %}#}
-{#                            {% else %}#}
-{#                                {% trans %}No results found.{% endtrans %}#}
-{#                            {% endif %}#}
-{#                        </p>#}
-{#                    {% endif %}#}
                 {% endif %}
 
             </div>
@@ -175,7 +129,6 @@
                     </div>
                 </div>
             </div>
-
 
         </div>
     </div>

@@ -18,7 +18,6 @@ nelmio_cors:
         '^/':
             origin_regex: true
             allow_origin: ['*']
-#            allow_origin: ['%env(string:CORS_ALLOW_ORIGIN)%']
             allow_headers: ['X-Custom-Auth']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600

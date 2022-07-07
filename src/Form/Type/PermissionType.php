@@ -10,12 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PermissionType extends AbstractType
 {
-
-    public function __construct(
-        // TODO: роли, у которых есть этот пермишн. И пользователи
-    ) {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

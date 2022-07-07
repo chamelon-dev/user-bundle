@@ -43,7 +43,6 @@ class UserProvider implements UserProviderInterface
     private $class;
 
     /**
-     * UserProvider constructor.
      * @param EventDispatcherInterface $eventDispatcher
      * @param EntityManagerInterface $em
      * @param string $classOrAlias
@@ -56,7 +55,6 @@ class UserProvider implements UserProviderInterface
         $this->classOrAlias = $classOrAlias;
         $this->property = $property;
     }
-
 
     /**
      * @param string $username
@@ -97,7 +95,6 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-
     /**
      *
      * @param UserInterface $user
@@ -110,7 +107,6 @@ class UserProvider implements UserProviderInterface
         if (!$user instanceof $class) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
-
         $repository = $this->getRepository();
         if ($repository instanceof UserProviderInterface) {
             $refreshedUser = $repository->refreshUser($user);
@@ -128,8 +124,6 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * Whether this provider supports the given user class.
-     *
      * @param string $class
      *
      * @return bool
@@ -156,8 +150,7 @@ class UserProvider implements UserProviderInterface
         return $this->class;
     }
 
-
-    private function getClassMetadata(): ClassMetadata // persistence --> mapping
+    private function getClassMetadata(): ClassMetadata
     {
         return $this->em->getClassMetadata($this->classOrAlias);
     }

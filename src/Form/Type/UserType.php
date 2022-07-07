@@ -2,9 +2,7 @@
 
 namespace Pantheon\UserBundle\Form\Type;
 
-use Pantheon\UserBundle\Entity\Role;
 use Pantheon\UserBundle\Entity\User;
-use Pantheon\UserBundle\Repository\PermissionRepository;
 use Pantheon\UserBundle\Repository\RoleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -94,8 +92,6 @@ class UserType extends AbstractType
                     'placeholder' => 'Номер телефона',
                 ],
             ])
-
-
             ->add('role', ChoiceType::class, [
                 'label' => 'Роли',
                 'choice_label' => function ($choice, $key, $value) {

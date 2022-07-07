@@ -49,8 +49,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * Список пользователей.
-     *
      * @Route("/", name="rest_api_user_list", methods={"GET"})
      *
      * @param Request $request
@@ -160,8 +158,6 @@ class UserController extends AbstractController
 
     /**
      * Добавление нового пользователя.
-     *
-     * TODO:
      *
      * @Route("/", name="rest_api_user_add", methods={"POST"})
      * @Route("", methods={"POST"})

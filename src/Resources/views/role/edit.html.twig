@@ -6,10 +6,6 @@
 
 {% block body_title %}<h3>{% trans %}Редактирование роли{% endtrans %}</h3>{% endblock %}
 
-{#{% block head_title %}#}
-{#    {{ title }} | {% trans %}CHS service{% endtrans %}#}
-{#{% endblock %}#}
-
 {% block title %}{{ title }}{% endblock %}
 {% block body_content %}
 
@@ -119,47 +115,6 @@
                                     </div>
                                 </div>
 
-
-{#                                <div class="infoblock-row">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-12">#}
-{#                                            {{ include('helpers/formDateField.html.twig', {#}
-{#                                                'formField': form.startDatetime#}
-{#                                            }) }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-
-{#                                <div class="infoblock-row">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-12">#}
-{#                                            {{ include('helpers/formDateField.html.twig', {#}
-{#                                                'formField': form.endDatetime#}
-{#                                            }) }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-
-{#                                <div class="infoblock-row">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-12">#}
-{#                                            {{ include('helpers/formDateField.html.twig', {#}
-{#                                                'formField': form.registeredDatetime#}
-{#                                            }) }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-
-{#                                <div class="infoblock-row">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-12">#}
-{#                                            {{ include('helpers/formDateField.html.twig', {#}
-{#                                                'formField': form.epguPublishEndDatetime#}
-{#                                            }) }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-
                             </div>
                         </div>
 
@@ -171,9 +126,6 @@
                                             <div class="left">
                                                 {% include '@User/actions.html.twig' with {'actions': actions } %}
                                             </div>
-{#                                            <div class="right">#}
-{#                                                {% include 'actions.html.twig' with {'actions': actionsRight } %}#}
-{#                                            </div>#}
                                         </div>
                                     </div>
                                 </div>

@@ -35,11 +35,10 @@ class PermissionController extends AbstractController
      * @param UserRepository $userRepository
      */
 
-
     public function list(
-        Request              $request,
+        Request  $request,
         PermissionRepository $permissionRepository,
-        PaginatorInterface   $paginator
+        PaginatorInterface $paginator
     )
     {
         $currentLimit = (int)$request->query->get('limit', self::PAGINATION_LIMITS[0]) ?: 1024;
@@ -58,15 +57,6 @@ class PermissionController extends AbstractController
             'currentLimit' => $currentLimit,
             'limitsList' => self::PAGINATION_LIMITS,
         ];
-    }
-
-    /**
-     * Добавление нового пермишна.
-     * @Route("/add/", name="permission_add")
-     */
-    public function add()
-    {
-
     }
 
     /**
@@ -94,12 +84,10 @@ class PermissionController extends AbstractController
             );
             return $this->redirect($redirectUrl);
         }
-
         return [
             'form' => $form->createView(),
             'permission' => $permission,
         ];
-
     }
 
     /**
@@ -109,7 +97,7 @@ class PermissionController extends AbstractController
      */
     public function delete(
         Permission $permission,
-        Request    $request
+        Request $request
     )
     {
         $this->em->remove($permission);

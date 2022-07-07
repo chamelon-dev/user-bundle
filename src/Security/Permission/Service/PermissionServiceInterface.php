@@ -10,7 +10,6 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 interface PermissionServiceInterface
 {
-
     public function getCurrentUserToken();
 
     /**
@@ -47,5 +46,4 @@ interface PermissionServiceInterface
      * @return LoggerInterface
      */
     public function getLogger(): LoggerInterface;
-
 }

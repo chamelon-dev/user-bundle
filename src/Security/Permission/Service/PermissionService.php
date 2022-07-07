@@ -124,5 +124,4 @@ abstract class PermissionService implements PermissionServiceInterface
     public function getCurrentUserToken(){
         return null;
     }
-
 }

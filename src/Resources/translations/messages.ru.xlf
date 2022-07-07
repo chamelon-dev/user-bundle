@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-     <trans-unit id="user.1" resname="kkk">
-        <source>kkk</source>
-        <target>ккк</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>

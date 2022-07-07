@@ -12,7 +12,6 @@ class LocalPermissionProvider extends PermissionProvider
     protected $permissions;
 
     /**
-     * LocalPermissionProvider constructor.
      * @param array $config
      * @param CacheInterface $cache
      * @param LoggerInterface $logger

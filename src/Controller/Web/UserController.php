@@ -68,16 +68,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * Добавление нового пользователя.
-     * @Route("/add/", name="user_add")
-     */
-    public function add()
-    {
-
-
-    }
-
-    /**
      * Редактирование пользователя.
      * @Route("/{id}/edit/", name="user_edit")
      * @Template("@User/user/edit.html.twig")

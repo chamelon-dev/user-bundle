@@ -15,8 +15,6 @@ class EnvExtension extends AbstractExtension
     }
 
     /**
-     * Return the value of the requested environment variable.
-     *
      * @param String $varname
      * @return String
      */
